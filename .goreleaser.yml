@@ -1,0 +1,17 @@
+# Build customization
+builds:
+  - goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+# Archive customization
+archives:
+  format: tar.gz
+  files:
+    - LICENSE
+    - README.md
+  format_overrides:
+    - goos: windows
+      format: zip
