@@ -6,6 +6,7 @@ builds:
       - windows
     goarch:
       - amd64
+    binary: "terraform-provider-lastpass_v{{ .Version }}"
 # Archive customization
 archive:
   format: tar.gz
