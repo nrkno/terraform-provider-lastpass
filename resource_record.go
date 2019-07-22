@@ -35,23 +35,23 @@ func ResourceRecord() *schema.Resource {
 		Delete: ResourceRecordDelete,
 
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
+			"name": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
-			"username": &schema.Schema{
+			"username": {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
-			"password": &schema.Schema{
+			"password": {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
-			"url": &schema.Schema{
+			"url": {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
-			"note": &schema.Schema{
+			"note": {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
