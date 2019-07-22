@@ -6,6 +6,8 @@ builds:
     goarch:
       - amd64
     binary: "terraform-provider-lastpass_v{{ .Version }}"
+    env:
+      - GO111MODULE=on
 archive:
   format: tar.gz
   files:
