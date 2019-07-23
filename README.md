@@ -12,10 +12,18 @@ The provider requires the [lastpass-cli](https://github.com/lastpass/lastpass-cl
 2. Make sure to have `lpass` in your current `$PATH` and logged in with your user credentials. 
 3. Once a plugin is installed, `terraform init` can initialize it normally.
 
+Tip: Set `LPASS_AGENT_TIMEOUT=86400` inside your `~/.lpass/env` to stay logged in for 24h. Set to `0` to never logout (less secure).
+
 
 ### Example Usage:
 
 ```hcl
+provider "lastpass" {
+    version = "0.2.0"
+    username = "user@example.com"
+    password = "s3cret"
+} 
+
 resource "lastpass_record" "mysecret" {
     name = "My site"
     username = "foobar"
@@ -36,6 +44,16 @@ EOF
 ```
 
 ### Argument Reference:
+
+#### provider lastpass
+
+* `username` - (Optional) 
+  * Leave empty if you choose to login manually.
+  * With 2FA enabled you will need to login manually with `--trust` at least once.
+* `password` - (Optional) Only required if username is set.
+
+
+#### resource lastpass_record
 
 The following arguments are supported:
 
