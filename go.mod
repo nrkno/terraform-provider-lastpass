@@ -1,4 +1,4 @@
-module github.com/martensson/terraform-provider-lastpass
+module github.com/nrkno/terraform-provider-lastpass
 
 go 1.12
 
