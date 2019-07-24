@@ -27,8 +27,7 @@ type Record struct {
 }
 
 func (r *Record) getTemplate() string {
-	template := fmt.Sprintf(`
-	Name: %s
+	template := fmt.Sprintf(`Name: %s
 	URL: %s
 	Username: %s 
 	Password: %s
