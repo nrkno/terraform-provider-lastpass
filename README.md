@@ -9,8 +9,8 @@ The provider requires the [lastpass-cli](https://github.com/lastpass/lastpass-cl
 
 1. Install [Terraform](https://www.terraform.io/downloads.html) v0.12 or later.
 1. Install the latest pre-compiled binary (Linux/MacOS/Windows) inside `~/.terraform.d/plugins`. Check [releases](https://github.com/nrkno/terraform-provider-lastpass/releases) page.
-2. Make sure to have `lpass` in your current `$PATH` and logged in with your user credentials. 
-3. Once a plugin is installed, `terraform init` can initialize it normally.
+2. Make sure to have `lpass` in your current `$PATH`. 
+3. Once a plugin is installed, run `terraform init` to initialize it normally.
 
 Tip: Set `LPASS_AGENT_TIMEOUT=86400` inside your `~/.lpass/env` to stay logged in for 24h. Set to `0` to never logout (less secure).
 
@@ -48,7 +48,7 @@ EOF
 #### provider lastpass
 
 * `username` - (Optional) 
-  * Leave empty if you choose to login manually.
+  * Leave empty if you prefer to login manually.
   * With 2FA enabled you will need to login manually with `--trust` at least once.
 * `password` - (Optional) Only required if username is set.
 

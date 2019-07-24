@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/nrkno/terraform-provider-lastpass/lastpass"
 )
 
 // Provider config
@@ -36,12 +37,9 @@ func Provider() *schema.Provider {
 }
 
 func providerConfigure(d *schema.ResourceData) (interface{}, error) {
-	cfg := config{
-		Username: d.Get("username").(string),
-		Password: d.Get("password").(string),
+	if d.Get("username").(string) != "" && d.Get("password").(string) == "" {
+		return nil, errors.New("lastpass password is not set")
 	}
-	if cfg.Username != "" && cfg.Password == "" {
-		return nil, errors.New("Lastpass password is not set")
-	}
-	return cfg, nil
+	client := lastpass.NewClient(d.Get("username").(string), d.Get("password").(string))
+	return client, nil
 }
