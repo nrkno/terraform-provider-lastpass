@@ -167,6 +167,9 @@ func (c *Client) Read(id string) (Record, error) {
 	if err != nil {
 		return r, err
 	}
+	if records[0].URL == "http://" {
+		records[0].URL = ""
+	}
 	records[0].Note = records[0].Note + "\n" // lastpass trims new line, provokes constant changes.
 	return records[0], nil
 }
