@@ -39,31 +39,23 @@ func (r *Record) getTemplate() string {
 
 // Client is our Lastpass (lpass) wrapper client.
 type Client struct {
-	username string
-	password string
-}
-
-// NewClient creates a new Lastpass client
-func NewClient(u, p string) *Client {
-	c := new(Client)
-	c.username = u
-	c.password = p
-	return c
+	Username string
+	Password string
 }
 
 func (c *Client) login() error {
 	cmd := exec.Command("lpass", "status", "-q")
 	err := cmd.Run()
 	if err != nil {
-		if c.username == "" {
+		if c.Username == "" {
 			err := errors.New("Not logged in, please run 'lpass login' manually and try again")
 			return err
 		}
-		cmd := exec.Command("lpass", "login", c.username)
+		cmd := exec.Command("lpass", "login", c.Username)
 		var inbuf, errbuf bytes.Buffer
 		cmd.Env = os.Environ()
 		cmd.Env = append(cmd.Env, "LPASS_DISABLE_PINENTRY=1")
-		inbuf.Write([]byte(c.password))
+		inbuf.Write([]byte(c.Password))
 		cmd.Stdin = &inbuf
 		cmd.Stderr = &errbuf
 		err := cmd.Run()

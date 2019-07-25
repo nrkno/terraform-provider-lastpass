@@ -40,6 +40,9 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 	if d.Get("username").(string) != "" && d.Get("password").(string) == "" {
 		return nil, errors.New("lastpass password is not set")
 	}
-	client := lastpass.NewClient(d.Get("username").(string), d.Get("password").(string))
-	return client, nil
+	client := lastpass.Client{
+		Username: d.Get("username").(string),
+		Password: d.Get("password").(string),
+	}
+	return &client, nil
 }
