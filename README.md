@@ -19,7 +19,7 @@ Bonus:
 
 ```hcl
 provider "lastpass" {
-    version = "0.2.0"
+    version = "0.3.0"
     username = "user@example.com"
     password = "s3cret"
 } 
