@@ -8,8 +8,8 @@ import (
 	"os/exec"
 )
 
-// Record describes a Lastpass json response
-type Record struct {
+// Secret describes a Lastpass object.
+type Secret struct {
 	Fullname        string `json:"fullname"`
 	Group           string `json:"group"`
 	ID              string `json:"id"`
@@ -29,14 +29,14 @@ type Client struct {
 	Password string
 }
 
-func (r *Record) getTemplate() string {
+func (s *Secret) getTemplate() string {
 	template := fmt.Sprintf(`Name: %s
 URL: %s
 Username: %s 
 Password: %s
 Notes:    # Add notes below this line.
 %s
-`, r.Name, r.URL, r.Username, r.Password, r.Note)
+`, s.Name, s.URL, s.Username, s.Password, s.Note)
 	return template
 }
 

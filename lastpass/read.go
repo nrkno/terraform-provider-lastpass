@@ -9,11 +9,11 @@ import (
 )
 
 // Fetch record from upstream to update local record
-func (c *Client) Read(id string) (Record, error) {
-	var r Record
+func (c *Client) Read(id string) (Secret, error) {
+	var s Secret
 	err := c.login()
 	if err != nil {
-		return r, err
+		return s, err
 	}
 	cmd := exec.Command("lpass", "show", id, "--json", "-x")
 	var outbuf, errbuf bytes.Buffer
@@ -24,20 +24,20 @@ func (c *Client) Read(id string) (Record, error) {
 		// Make sure the record is not removed manually.
 		if strings.Contains(errbuf.String(), "Could not find specified account") {
 			// If no record is found, set to 0 for deletion.
-			r.ID = "0"
-			return r, err
+			s.ID = "0"
+			return s, err
 		}
 		var err = errors.New(errbuf.String())
-		return r, err
+		return s, err
 	}
-	var records []Record
-	err = json.Unmarshal(outbuf.Bytes(), &records)
+	var secrets []Secret
+	err = json.Unmarshal(outbuf.Bytes(), &secrets)
 	if err != nil {
-		return r, err
+		return s, err
 	}
-	if records[0].URL == "http://" {
-		records[0].URL = ""
+	if secrets[0].URL == "http://" {
+		secrets[0].URL = ""
 	}
-	records[0].Note = records[0].Note + "\n" // lastpass trims new line, provokes constant changes.
-	return records[0], nil
+	secrets[0].Note = secrets[0].Note + "\n" // lastpass trims new line, provokes constant changes.
+	return secrets[0], nil
 }

@@ -29,14 +29,14 @@ func TestClient(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	r := Record{
+	s := Secret{
 		Name:     "myintegrationtest",
 		URL:      "https://example.com",
 		Username: "user",
 		Password: "pw",
 		Note:     "ABC\nDEF\nGHJ",
 	}
-	template := r.getTemplate()
+	template := s.getTemplate()
 	expect := `Name: myintegrationtest
 URL: https://example.com
 Username: user 
@@ -49,27 +49,27 @@ GHJ
 	if template != expect {
 		t.Error("Template not as expected")
 	}
-	r, err = client.Create(r)
+	s, err = client.Create(s)
 	if err != nil {
 		t.Error(err)
 	}
-	r.Username = "user2"
-	r.Password = "pw2"
-	r.URL = "https://example2.com"
-	r.Note = "123\n456\n789"
-	r.Name = "myintegrationtest2"
-	err = client.Update(r)
+	s.Username = "user2"
+	s.Password = "pw2"
+	s.URL = "https://example2.com"
+	s.Note = "123\n456\n789"
+	s.Name = "myintegrationtest2"
+	err = client.Update(s)
 	if err != nil {
 		t.Error(err)
 	}
-	r, err = client.Read(r.ID)
+	s, err = client.Read(s.ID)
 	if err != nil {
 		t.Error(err)
 	}
-	if r.Name != "myintegrationtest2" && r.URL != "https://example2.com" && r.Username != "user2" && r.Password != "pw2" && r.Note != "123\n456\n789" {
+	if s.Name != "myintegrationtest2" && s.URL != "https://example2.com" && s.Username != "user2" && s.Password != "pw2" && s.Note != "123\n456\n789" {
 		t.Error("Read() did not receive expected values.")
 	}
-	err = client.Delete(r.ID)
+	err = client.Delete(s.ID)
 	if err != nil {
 		t.Error(err)
 	}

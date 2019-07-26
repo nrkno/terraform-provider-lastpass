@@ -9,13 +9,13 @@ import (
 )
 
 // Create is used to create a new resource and generate ID.
-func (c *Client) Create(r Record) (Record, error) {
+func (c *Client) Create(s Secret) (Secret, error) {
 	err := c.login()
 	if err != nil {
-		return r, err
+		return s, err
 	}
-	template := r.getTemplate()
-	cmd := exec.Command("lpass", "add", r.Name, "--non-interactive", "--sync=now")
+	template := s.getTemplate()
+	cmd := exec.Command("lpass", "add", s.Name, "--non-interactive", "--sync=now")
 	var inbuf, errbuf bytes.Buffer
 	inbuf.Write([]byte(template))
 	cmd.Stdin = &inbuf
@@ -23,30 +23,30 @@ func (c *Client) Create(r Record) (Record, error) {
 	err = cmd.Run()
 	if err != nil {
 		var err = errors.New(errbuf.String())
-		return r, err
+		return s, err
 	}
 	time.Sleep(time.Second * 5) // Need to finish sync with upstream/lastpass before we get actual ID.
-	cmd = exec.Command("lpass", "show", r.Name, "--json", "-x")
+	cmd = exec.Command("lpass", "show", s.Name, "--json", "-x")
 	var outbuf bytes.Buffer
 	cmd.Stdout = &outbuf
 	cmd.Stderr = &errbuf
 	err = cmd.Run()
 	if err != nil {
 		var err = errors.New(errbuf.String())
-		return r, err
+		return s, err
 	}
-	var records []Record
-	err = json.Unmarshal(outbuf.Bytes(), &records)
+	var secrets []Secret
+	err = json.Unmarshal(outbuf.Bytes(), &secrets)
 	if err != nil {
-		return r, err
+		return s, err
 	}
-	if len(records) > 1 {
+	if len(secrets) > 1 {
 		err := errors.New("more than one record with same name")
-		return r, err
+		return s, err
 	}
-	if records[0].ID == "0" {
+	if secrets[0].ID == "0" {
 		err := errors.New("got invalid ID 0, possible problem with lpass sync")
-		return records[0], err
+		return secrets[0], err
 	}
-	return records[0], nil
+	return secrets[0], nil
 }
