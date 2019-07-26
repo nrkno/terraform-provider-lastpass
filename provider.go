@@ -17,10 +17,10 @@ type config struct {
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		ResourcesMap: map[string]*schema.Resource{
-			"lastpass_secret": ResourceRecord(),
+			"lastpass_secret": ResourceSecret(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"lastpass_secret": DataSourceRecord(),
+			"lastpass_secret": DataSourceSecret(),
 		},
 		Schema: map[string]*schema.Schema{
 			"username": {

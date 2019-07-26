@@ -41,7 +41,7 @@ func (c *Client) Create(s Secret) (Secret, error) {
 		return s, err
 	}
 	if len(secrets) > 1 {
-		err := errors.New("more than one record with same name")
+		err := errors.New("more than one secret with same name")
 		return s, err
 	}
 	if secrets[0].ID == "0" {

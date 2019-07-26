@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// Delete record in upstream db
+// Delete secret in upstream db
 func (c *Client) Delete(id string) error {
 	err := c.login()
 	if err != nil {
@@ -18,7 +18,7 @@ func (c *Client) Delete(id string) error {
 	cmd.Stderr = &errbuf
 	err = cmd.Run()
 	if err != nil {
-		// Make sure the record is not removed manually.
+		// Make sure the secret is not removed manually.
 		if strings.Contains(errbuf.String(), "Could not find specified account") {
 			return nil
 		}

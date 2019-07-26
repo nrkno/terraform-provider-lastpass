@@ -8,15 +8,15 @@ import (
 	"github.com/nrkno/terraform-provider-lastpass/lastpass"
 )
 
-// ResourceRecord describes our lastpass record resource
-func ResourceRecord() *schema.Resource {
+// ResourceSecret describes our lastpass secret resource
+func ResourceSecret() *schema.Resource {
 	return &schema.Resource{
-		Create: ResourceRecordCreate,
-		Read:   ResourceRecordRead,
-		Update: ResourceRecordUpdate,
-		Delete: ResourceRecordDelete,
+		Create: ResourceSecretCreate,
+		Read:   ResourceSecretRead,
+		Update: ResourceSecretUpdate,
+		Delete: ResourceSecretDelete,
 		Importer: &schema.ResourceImporter{
-			State: ResourceRecordImporter,
+			State: ResourceSecretImporter,
 		},
 
 		Schema: map[string]*schema.Schema{
@@ -62,9 +62,9 @@ func ResourceRecord() *schema.Resource {
 	}
 }
 
-// ResourceRecordCreate is used to create a new resource and generate ID.
-func ResourceRecordCreate(d *schema.ResourceData, m interface{}) error {
-	r := lastpass.Record{
+// ResourceSecretCreate is used to create a new resource and generate ID.
+func ResourceSecretCreate(d *schema.ResourceData, m interface{}) error {
+	s := lastpass.Secret{
 		Name:     d.Get("name").(string),
 		URL:      d.Get("url").(string),
 		Username: d.Get("username").(string),
@@ -72,40 +72,40 @@ func ResourceRecordCreate(d *schema.ResourceData, m interface{}) error {
 		Note:     d.Get("note").(string),
 	}
 	client := m.(*lastpass.Client)
-	r, err := client.Create(r)
+	s, err := client.Create(s)
 	if err != nil {
 		return err
 	}
-	d.SetId(r.ID)
-	return ResourceRecordRead(d, m)
+	d.SetId(s.ID)
+	return ResourceSecretRead(d, m)
 }
 
-// ResourceRecordRead is used to sync the local state with the actual state (upstream/lastpass)
-func ResourceRecordRead(d *schema.ResourceData, m interface{}) error {
+// ResourceSecretRead is used to sync the local state with the actual state (upstream/lastpass)
+func ResourceSecretRead(d *schema.ResourceData, m interface{}) error {
 	client := m.(*lastpass.Client)
-	r, err := client.Read(d.Id())
+	s, err := client.Read(d.Id())
 	if err != nil {
-		if r.ID == "0" {
+		if s.ID == "0" {
 			d.SetId("")
 			return nil
 		}
 		return err
 	}
-	d.Set("name", r.Name)
-	d.Set("fullname", r.Fullname)
-	d.Set("username", r.Username)
-	d.Set("password", r.Password)
-	d.Set("last_modified_gmt", r.LastModifiedGmt)
-	d.Set("last_touch", r.LastTouch)
-	d.Set("group", r.Group)
-	d.Set("url", r.URL)
-	d.Set("note", r.Note)
+	d.Set("name", s.Name)
+	d.Set("fullname", s.Fullname)
+	d.Set("username", s.Username)
+	d.Set("password", s.Password)
+	d.Set("last_modified_gmt", s.LastModifiedGmt)
+	d.Set("last_touch", s.LastTouch)
+	d.Set("group", s.Group)
+	d.Set("url", s.URL)
+	d.Set("note", s.Note)
 	return nil
 }
 
-// ResourceRecordUpdate is used to update our existing resource
-func ResourceRecordUpdate(d *schema.ResourceData, m interface{}) error {
-	r := lastpass.Record{
+// ResourceSecretUpdate is used to update our existing resource
+func ResourceSecretUpdate(d *schema.ResourceData, m interface{}) error {
+	s := lastpass.Secret{
 		Name:     d.Get("name").(string),
 		URL:      d.Get("url").(string),
 		Username: d.Get("username").(string),
@@ -114,15 +114,15 @@ func ResourceRecordUpdate(d *schema.ResourceData, m interface{}) error {
 		ID:       d.Id(),
 	}
 	client := m.(*lastpass.Client)
-	err := client.Update(r)
+	err := client.Update(s)
 	if err != nil {
 		return err
 	}
-	return ResourceRecordRead(d, m)
+	return ResourceSecretRead(d, m)
 }
 
-// ResourceRecordDelete is called to destroy the resource.
-func ResourceRecordDelete(d *schema.ResourceData, m interface{}) error {
+// ResourceSecretDelete is called to destroy the resource.
+func ResourceSecretDelete(d *schema.ResourceData, m interface{}) error {
 	client := m.(*lastpass.Client)
 	err := client.Delete(d.Id())
 	if err != nil {
@@ -131,25 +131,25 @@ func ResourceRecordDelete(d *schema.ResourceData, m interface{}) error {
 	return nil
 }
 
-// ResourceRecordImporter is called to import an existing resource.
-func ResourceRecordImporter(d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {
+// ResourceSecretImporter is called to import an existing resource.
+func ResourceSecretImporter(d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {
 	if _, err := strconv.Atoi(d.Id()); err != nil {
 		err := errors.New("Not a valid Lastpass ID")
 		return nil, err
 	}
 	client := m.(*lastpass.Client)
-	r, err := client.Read(d.Id())
+	s, err := client.Read(d.Id())
 	if err != nil {
 		return nil, err
 	}
-	d.Set("name", r.Name)
-	d.Set("fullname", r.Fullname)
-	d.Set("username", r.Username)
-	d.Set("password", r.Password)
-	d.Set("last_modified_gmt", r.LastModifiedGmt)
-	d.Set("last_touch", r.LastTouch)
-	d.Set("group", r.Group)
-	d.Set("url", r.URL)
-	d.Set("note", r.Note)
+	d.Set("name", s.Name)
+	d.Set("fullname", s.Fullname)
+	d.Set("username", s.Username)
+	d.Set("password", s.Password)
+	d.Set("last_modified_gmt", s.LastModifiedGmt)
+	d.Set("last_touch", s.LastTouch)
+	d.Set("group", s.Group)
+	d.Set("url", s.URL)
+	d.Set("note", s.Note)
 	return []*schema.ResourceData{d}, nil
 }

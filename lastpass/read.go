@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// Fetch record from upstream to update local record
+// Fetch secret from upstream to update local secret
 func (c *Client) Read(id string) (Secret, error) {
 	var s Secret
 	err := c.login()
@@ -21,9 +21,9 @@ func (c *Client) Read(id string) (Secret, error) {
 	cmd.Stderr = &errbuf
 	err = cmd.Run()
 	if err != nil {
-		// Make sure the record is not removed manually.
+		// Make sure the secret is not removed manually.
 		if strings.Contains(errbuf.String(), "Could not find specified account") {
-			// If no record is found, set to 0 for deletion.
+			// If no secret is found, set to 0 for deletion.
 			s.ID = "0"
 			return s, err
 		}

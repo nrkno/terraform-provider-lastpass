@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-// Update is called to update record with upstream
+// Update is called to update secret with upstream
 func (c *Client) Update(s Secret) error {
 	err := c.login()
 	if err != nil {

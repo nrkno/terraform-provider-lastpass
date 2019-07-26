@@ -24,7 +24,7 @@ provider "lastpass" {
     password = "s3cret"
 } 
 
-resource "lastpass_record" "mysecret" {
+resource "lastpass_secret" "mysecret" {
     name = "My site"
     username = "foobar"
     password = "hunter2"
@@ -42,12 +42,12 @@ elementum. Integer commodo ullamcorper ultrices. Donec sed varius arcu.
 EOF
 }
 
-data "lastpass_record" "myvm" {
+data "lastpass_secret" "myvm" {
     id = "3863267983730403838"
 }
 
 output "myvm_password" {
-    value = "${data.lastpass_record.myvm.password}"
+    value = "${data.lastpass_secret.myvm.password}"
 }
 ```
 
@@ -56,7 +56,7 @@ output "myvm_password" {
 Import a pre-existing resource in Lastpass is supported. Example:
 
 ```
-terraform import lastpass_record.mysecret 4252909269944373577
+terraform import lastpass_secret.mysecret 4252909269944373577
 ```
 
 The ID needs to be a unique numerical value.
@@ -71,7 +71,7 @@ The ID needs to be a unique numerical value.
   * Can be set via `LASTPASS_PASSWORD` env variable.
 
 
-### resource lastpass_record
+### resource lastpass_secret
 
 **Argument Reference**
 
@@ -89,7 +89,7 @@ The ID needs to be a unique numerical value.
 * `group` - (Calculated) 
 
 
-### data source lastpass_record
+### data source lastpass_secret
 
 **Argument Reference**
 

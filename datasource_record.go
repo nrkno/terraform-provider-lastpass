@@ -8,10 +8,10 @@ import (
 	"github.com/nrkno/terraform-provider-lastpass/lastpass"
 )
 
-// DataSourceRecord describes our lastpass record data source
-func DataSourceRecord() *schema.Resource {
+// DataSourceSecret describes our lastpass secret data source
+func DataSourceSecret() *schema.Resource {
 	return &schema.Resource{
-		Read: DataSourceRecordRead,
+		Read: DataSourceSecretRead,
 		Schema: map[string]*schema.Schema{
 			"id": {
 				Type:     schema.TypeString,
@@ -59,31 +59,31 @@ func DataSourceRecord() *schema.Resource {
 	}
 }
 
-// DataSourceRecordRead reads resource from upstream/lastpass
-func DataSourceRecordRead(d *schema.ResourceData, m interface{}) error {
+// DataSourceSecretRead reads resource from upstream/lastpass
+func DataSourceSecretRead(d *schema.ResourceData, m interface{}) error {
 	client := m.(*lastpass.Client)
 	id := d.Get("id").(string)
 	if _, err := strconv.Atoi(id); err != nil {
 		err := errors.New("Not a valid Lastpass ID")
 		return err
 	}
-	r, err := client.Read(id)
+	s, err := client.Read(id)
 	if err != nil {
-		if r.ID == "0" {
+		if s.ID == "0" {
 			d.SetId("")
 			return nil
 		}
 		return err
 	}
-	d.SetId(r.ID)
-	d.Set("name", r.Name)
-	d.Set("fullname", r.Fullname)
-	d.Set("username", r.Username)
-	d.Set("password", r.Password)
-	d.Set("last_modified_gmt", r.LastModifiedGmt)
-	d.Set("last_touch", r.LastTouch)
-	d.Set("group", r.Group)
-	d.Set("url", r.URL)
-	d.Set("note", r.Note)
+	d.SetId(s.ID)
+	d.Set("name", s.Name)
+	d.Set("fullname", s.Fullname)
+	d.Set("username", s.Username)
+	d.Set("password", s.Password)
+	d.Set("last_modified_gmt", s.LastModifiedGmt)
+	d.Set("last_touch", s.LastTouch)
+	d.Set("group", s.Group)
+	d.Set("url", s.URL)
+	d.Set("note", s.Note)
 	return nil
 }
