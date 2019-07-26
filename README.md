@@ -5,7 +5,7 @@ The Lastpass provider is used to interact with the resources supported by Lastpa
 The provider requires the [lastpass-cli](https://github.com/lastpass/lastpass-cli) to be installed and configured with the proper credentials before it can be used. 
 
 
-### Getting started:
+## Getting started:
 
 1. Install [Terraform](https://www.terraform.io/downloads.html) v0.12 or later.
 1. Install the latest pre-compiled binary (Linux/MacOS/Windows) inside `~/.terraform.d/plugins`. Check [releases](https://github.com/nrkno/terraform-provider-lastpass/releases) page.
@@ -18,7 +18,7 @@ Bonus:
 - Set `LASTPASS_USER` and `LASTPASS_PASSWORD` env variables to avoid writing login to your .tf-file.
 
 
-### Example Usage:
+## Example Usage:
 
 ```hcl
 provider "lastpass" {
@@ -46,7 +46,7 @@ EOF
 }
 ```
 
-### Importer
+## Importer
 
 Import a pre-existing resource in Lastpass is supported. Example:
 
@@ -56,9 +56,7 @@ terraform import lastpass_record.mysecret 4252909269944373577
 
 The ID needs to be a unique numerical value.
 
-### Argument Reference:
-
-#### provider lastpass
+## provider lastpass
 
 * `username` - (Optional) 
   * Can be set via `LASTPASS_USER` env variable.
@@ -68,12 +66,28 @@ The ID needs to be a unique numerical value.
   * Can be set via `LASTPASS_PASSWORD` env variable.
 
 
-#### resource lastpass_record
+### resource lastpass_record
 
-The following arguments are supported:
+**Argument Reference**
 
 * `name` - (Required) Must be unique.
 * `username` - (Optional) 
 * `password` - (Optional) 
 * `url` - (Optional) 
+* `note` - (Optional)
+
+### data source lastpass_record
+
+**Argument Reference**
+
+* `id` - (Required) Must be unique numerical value.
+
+**Attributes Reference**
+* `name` - (Calculated) 
+* `fullname` - (Calculated) 
+* `username` - (Calculated) 
+* `password` - (Calculated) 
+* `last_modified_gmt` - (Calculated) 
+* `last_touch` - (Calculated) 
+* `url` - (Calculated) 
 * `note` - (Optional)
