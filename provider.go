@@ -19,6 +19,9 @@ func Provider() *schema.Provider {
 		ResourcesMap: map[string]*schema.Resource{
 			"lastpass_record": ResourceRecord(),
 		},
+		DataSourcesMap: map[string]*schema.Resource{
+			"lastpass_record": DataSourceRecord(),
+		},
 		Schema: map[string]*schema.Schema{
 			"username": {
 				Type:        schema.TypeString,
