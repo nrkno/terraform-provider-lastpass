@@ -23,7 +23,7 @@ Bonus:
 provider "lastpass" {
     version = "0.3.0"
     username = "user@example.com"
-    password = "s3cret"
+    password = file("${path.module}/.lpass")
 } 
 
 resource "lastpass_secret" "mysecret" {
@@ -35,12 +35,7 @@ resource "lastpass_secret" "mysecret" {
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sed elit nec orci
 cursus rhoncus. Morbi lacus turpis, volutpat in lobortis vel, mattis nec magna.
 Cras gravida libero vitae nisl iaculis ultrices. Fusce odio ligula, pharetra ac
-viverra semper, consequat quis risus. Ut pulvinar finibus ex, eget tempus felis
-dapibus et. Praesent vitae convallis ante. Nunc eros lorem, bibendum tincidunt
-feugiat non, interdum sit amet velit. Sed ac egestas augue. Nam semper interdum
-aliquam. In vitae lobortis velit, nec viverra lectus. Integer elit turpis,
-maximus non tincidunt eget, cursus eget nisi. Mauris faucibus gravida magna at
-elementum. Integer commodo ullamcorper ultrices. Donec sed varius arcu. 
+viverra semper, consequat quis risus.
 EOF
 }
 
