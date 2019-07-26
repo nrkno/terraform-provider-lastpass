@@ -1,6 +1,6 @@
 # terraform-provider-lastpass [![release](https://img.shields.io/github/release/nrkno/terraform-provider-lastpass.svg?style=flat-square)](https://github.com/nrkno/terraform-provider-lastpass/releases/latest) [![Build Status](https://travis-ci.com/nrkno/terraform-provider-lastpass.svg?branch=master)](https://travis-ci.com/nrkno/terraform-provider-lastpass) [![Go Report Card](https://goreportcard.com/badge/github.com/nrkno/terraform-provider-lastpass)](https://goreportcard.com/report/github.com/nrkno/terraform-provider-lastpass)
 
-The Lastpass provider is used to read, create, update, or destroy secrets inside Lastpass. 
+The Lastpass provider is used to read, create, update, or destroy secrets inside Lastpass. Goodbye secret .tfvars files 👋
 
 <img src="https://cdn.rawgit.com/hashicorp/terraform-website/master/content/source/assets/images/logo-hashicorp.svg" width="400px">
 
@@ -44,13 +44,21 @@ elementum. Integer commodo ullamcorper ultrices. Donec sed varius arcu.
 EOF
 }
 
-data "lastpass_secret" "myvm" {
+data "lastpass_secret" "mydb" {
     id = "3863267983730403838"
 }
 
-output "myvm_password" {
-    value = data.lastpass_secret.myvm.password
+resource "aws_db_instance" "mydb" {
+  allocated_storage    = 10
+  storage_type         = "gp2"
+  engine               = "mysql"
+  engine_version       = "5.7"
+  instance_class       = "db.t2.micro"
+  name                 = "mydb"
+  username             = data.lastpass_secret.mydb.user
+  password             = data.lastpass_secret.mydb.password
 }
+
 ```
 
 ## Importer
