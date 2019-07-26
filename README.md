@@ -43,6 +43,16 @@ EOF
 }
 ```
 
+### Importer
+
+Import of pre-existing resource in Lastpass is supported. Example:
+
+```
+terraform import lastpass_record.mysecret 4252909269944373577
+```
+
+The ID needs to be a unique numerical value.
+
 ### Argument Reference:
 
 #### provider lastpass

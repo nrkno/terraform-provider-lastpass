@@ -1,6 +1,9 @@
 package main
 
 import (
+	"errors"
+	"strconv"
+
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/nrkno/terraform-provider-lastpass/lastpass"
 )
@@ -12,6 +15,9 @@ func ResourceRecord() *schema.Resource {
 		Read:   ResourceRecordRead,
 		Update: ResourceRecordUpdate,
 		Delete: ResourceRecordDelete,
+		Importer: &schema.ResourceImporter{
+			State: ResourceRecordImporter,
+		},
 
 		Schema: map[string]*schema.Schema{
 			"name": {
@@ -103,4 +109,23 @@ func ResourceRecordDelete(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 	return nil
+}
+
+// ResourceRecordImporter is called to import an existing resource.
+func ResourceRecordImporter(d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {
+	if _, err := strconv.Atoi(d.Id()); err != nil {
+		err := errors.New("Not a valid Lastpass ID")
+		return nil, err
+	}
+	client := m.(*lastpass.Client)
+	r, err := client.Read(d.Id())
+	if err != nil {
+		return nil, err
+	}
+	d.Set("name", r.Name)
+	d.Set("url", r.URL)
+	d.Set("username", r.Username)
+	d.Set("password", r.Password)
+	d.Set("note", r.Note)
+	return []*schema.ResourceData{d}, nil
 }
