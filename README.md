@@ -2,6 +2,8 @@
 
 The Lastpass provider is used to read, create, update, or destroy secrets inside Lastpass. 
 
+<img src="https://cdn.rawgit.com/hashicorp/terraform-website/master/content/source/assets/images/logo-hashicorp.svg" width="400px">
+
 ## Getting started:
 
 1. Install [Terraform](https://www.terraform.io/downloads.html) v0.12 or later.
