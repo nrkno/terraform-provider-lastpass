@@ -84,6 +84,14 @@ The ID needs to be a unique numerical value.
 * `url` - (Optional) 
 * `note` - (Optional)
 
+**Attributes Reference**
+
+* `fullname` - (Calculated) 
+* `last_modified_gmt` - (Calculated) 
+* `last_touch` - (Calculated) 
+* `group` - (Calculated) 
+
+
 ### data source lastpass_record
 
 **Argument Reference**
@@ -91,11 +99,13 @@ The ID needs to be a unique numerical value.
 * `id` - (Required) Must be unique numerical value.
 
 **Attributes Reference**
+
 * `name` - (Calculated) 
 * `fullname` - (Calculated) 
 * `username` - (Calculated) 
 * `password` - (Calculated) 
 * `last_modified_gmt` - (Calculated) 
 * `last_touch` - (Calculated) 
+* `group` - (Calculated) 
 * `url` - (Calculated) 
 * `note` - (Optional)
