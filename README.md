@@ -44,6 +44,14 @@ maximus non tincidunt eget, cursus eget nisi. Mauris faucibus gravida magna at
 elementum. Integer commodo ullamcorper ultrices. Donec sed varius arcu. 
 EOF
 }
+
+data "lastpass_record" "myvm" {
+    id = "3863267983730403838"
+}
+
+output "myvm_password" {
+    value = "${data.lastpass_record.myvm.password}"
+}
 ```
 
 ## Importer
