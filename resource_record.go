@@ -24,6 +24,10 @@ func ResourceRecord() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 			},
+			"fullname": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
 			"username": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -32,6 +36,18 @@ func ResourceRecord() *schema.Resource {
 				Type:      schema.TypeString,
 				Optional:  true,
 				Sensitive: true,
+			},
+			"last_modified_gmt": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
+			"last_touch": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
+			"group": {
+				Type:     schema.TypeString,
+				Computed: true,
 			},
 			"url": {
 				Type:     schema.TypeString,
@@ -76,9 +92,13 @@ func ResourceRecordRead(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 	d.Set("name", r.Name)
-	d.Set("url", r.URL)
+	d.Set("fullname", r.Fullname)
 	d.Set("username", r.Username)
 	d.Set("password", r.Password)
+	d.Set("last_modified_gmt", r.LastModifiedGmt)
+	d.Set("last_touch", r.LastTouch)
+	d.Set("group", r.Group)
+	d.Set("url", r.URL)
 	d.Set("note", r.Note)
 	return nil
 }
@@ -123,9 +143,13 @@ func ResourceRecordImporter(d *schema.ResourceData, m interface{}) ([]*schema.Re
 		return nil, err
 	}
 	d.Set("name", r.Name)
-	d.Set("url", r.URL)
+	d.Set("fullname", r.Fullname)
 	d.Set("username", r.Username)
 	d.Set("password", r.Password)
+	d.Set("last_modified_gmt", r.LastModifiedGmt)
+	d.Set("last_touch", r.LastTouch)
+	d.Set("group", r.Group)
+	d.Set("url", r.URL)
 	d.Set("note", r.Note)
 	return []*schema.ResourceData{d}, nil
 }
