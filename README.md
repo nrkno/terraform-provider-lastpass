@@ -12,7 +12,10 @@ The provider requires the [lastpass-cli](https://github.com/lastpass/lastpass-cl
 2. Make sure to have `lpass` in your current `$PATH`. 
 3. Once a plugin is installed, run `terraform init` to initialize it normally.
 
-Tip: Set `LPASS_AGENT_TIMEOUT=86400` inside your `~/.lpass/env` to stay logged in for 24h. Set to `0` to never logout (less secure).
+Bonus: 
+
+- Set `LPASS_AGENT_TIMEOUT=86400` inside your `~/.lpass/env` to stay logged in for 24h. Set to `0` to never logout (less secure).
+- Set `LASTPASS_USER` and `LASTPASS_PASSWORD` env variables to avoid writing login to your .tf-file.
 
 
 ### Example Usage:
@@ -45,7 +48,7 @@ EOF
 
 ### Importer
 
-Import of pre-existing resource in Lastpass is supported. Example:
+Import a pre-existing resource in Lastpass is supported. Example:
 
 ```
 terraform import lastpass_record.mysecret 4252909269944373577
@@ -58,9 +61,11 @@ The ID needs to be a unique numerical value.
 #### provider lastpass
 
 * `username` - (Optional) 
+  * Can be set via `LASTPASS_USER` env variable.
   * Leave empty if you prefer to login manually.
   * With 2FA enabled you will need to login manually with `--trust` at least once.
 * `password` - (Optional) Only required if username is set.
+  * Can be set via `LASTPASS_PASSWORD` env variable.
 
 
 #### resource lastpass_record

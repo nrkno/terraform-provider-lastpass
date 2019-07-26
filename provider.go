@@ -23,13 +23,15 @@ func Provider() *schema.Provider {
 			"username": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "The Lastpass login e-mail",
+				Description: "Lastpass login e-mail",
+				DefaultFunc: schema.EnvDefaultFunc("LASTPASS_USER", ""),
 			},
 			"password": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Sensitive:   true,
-				Description: "The Lastpass login password",
+				Description: "Lastpass login password",
+				DefaultFunc: schema.EnvDefaultFunc("LASTPASS_PASSWORD", ""),
 			},
 		},
 		ConfigureFunc: providerConfigure,
