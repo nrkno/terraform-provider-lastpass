@@ -47,7 +47,7 @@ data "lastpass_secret" "myvm" {
 }
 
 output "myvm_password" {
-    value = "${data.lastpass_secret.myvm.password}"
+    value = data.lastpass_secret.myvm.password
 }
 ```
 
