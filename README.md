@@ -1,13 +1,13 @@
 # terraform-provider-lastpass [![release](https://img.shields.io/github/release/nrkno/terraform-provider-lastpass.svg?style=flat-square)](https://github.com/nrkno/terraform-provider-lastpass/releases/latest) [![Build Status](https://travis-ci.com/nrkno/terraform-provider-lastpass.svg?branch=master)](https://travis-ci.com/nrkno/terraform-provider-lastpass) [![Go Report Card](https://goreportcard.com/badge/github.com/nrkno/terraform-provider-lastpass)](https://goreportcard.com/report/github.com/nrkno/terraform-provider-lastpass)
 
-The Lastpass provider is used to read, create, update, or destroy your secrets inside Lastpass. 
+The Lastpass provider is used to read, create, update, or destroy secrets inside Lastpass. 
 
 ## Getting started:
 
 1. Install [Terraform](https://www.terraform.io/downloads.html) v0.12 or later.
 1. Install the latest pre-compiled binary (Linux/MacOS/Windows) inside `~/.terraform.d/plugins`. Check [releases](https://github.com/nrkno/terraform-provider-lastpass/releases) page.
 2. Make sure to have [lastpass-cli](https://github.com/lastpass/lastpass-cli) in your current `$PATH`. 
-3. Once a plugin is installed, run `terraform init` to initialize it normally.
+3. Once a plugin is installed, run `terraform init` to initialize it.
 
 Bonus: 
 
@@ -53,7 +53,7 @@ output "myvm_password" {
 
 ## Importer
 
-Import a pre-existing resource in Lastpass is supported. Example:
+Import a pre-existing secret in Lastpass. Example:
 
 ```
 terraform import lastpass_secret.mysecret 4252909269944373577
