@@ -26,10 +26,21 @@ provider "lastpass" {
     password = file("${path.module}/.lpass")
 } 
 
+# secret with random generated password
+resource "lastpass_secret" "mylogin" {
+    name = "My service"
+    username = "foobar"
+    generate {
+        length = 24
+        use_symbols = false
+    }
+}
+
+# secret with password set from string, file, variable, etc.
 resource "lastpass_secret" "mysecret" {
     name = "My site"
     username = "foobar"
-    password = "hunter2"
+    password = file("${path.module}/secret")
     url = "https://example.com"
     note = <<EOF
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sed elit nec orci
@@ -39,6 +50,7 @@ viverra semper, consequat quis risus.
 EOF
 }
 
+# data source with computed values
 data "lastpass_secret" "mydb" {
     id = "3863267983730403838"
 }
@@ -83,6 +95,9 @@ The ID needs to be a unique numerical value.
 * `name` - (Required) Must be unique.
 * `username` - (Optional) 
 * `password` - (Optional) 
+* `generate` - (Optional) Settings for autogenerating password. Either password or generate must be defined.
+  * length - (Required) The length of the password to generate.
+  * use_symbols - (Optional) Whether the secret should contain symbols.
 * `url` - (Optional) 
 * `note` - (Optional)
 
