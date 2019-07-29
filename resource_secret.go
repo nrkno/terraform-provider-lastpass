@@ -6,6 +6,7 @@ import (
 
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/nrkno/terraform-provider-lastpass/lastpass"
+	"github.com/sethvargo/go-password/password"
 )
 
 // ResourceSecret describes our lastpass secret resource
@@ -33,9 +34,33 @@ func ResourceSecret() *schema.Resource {
 				Optional: true,
 			},
 			"password": {
-				Type:      schema.TypeString,
-				Optional:  true,
-				Sensitive: true,
+				Type:          schema.TypeString,
+				ConflictsWith: []string{"generate"},
+				Optional:      true,
+				Sensitive:     true,
+				Computed:      true,
+				Description:   "The password contents. Either `password` or `generate` must be defined.",
+			},
+			"generate": {
+				Type:          schema.TypeList,
+				MaxItems:      1,
+				ConflictsWith: []string{"password"},
+				Optional:      true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"length": {
+							Type:        schema.TypeInt,
+							Required:    true,
+							Description: "The length of the password.",
+						},
+						"use_symbols": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: "Whether the secret should contain symbols.",
+						},
+					},
+				},
+				Description: "Settings for autogenerating a password. Either `password` or `generate` must be defined.",
 			},
 			"last_modified_gmt": {
 				Type:     schema.TypeString,
@@ -64,6 +89,11 @@ func ResourceSecret() *schema.Resource {
 
 // ResourceSecretCreate is used to create a new resource and generate ID.
 func ResourceSecretCreate(d *schema.ResourceData, m interface{}) error {
+	generate := d.Get("generate").([]interface{})
+	if d.Get("password") == "" && len(generate) == 0 {
+		return errors.New("either 'password' or 'generate' must be specified")
+	}
+	client := m.(*lastpass.Client)
 	s := lastpass.Secret{
 		Name:     d.Get("name").(string),
 		URL:      d.Get("url").(string),
@@ -71,7 +101,20 @@ func ResourceSecretCreate(d *schema.ResourceData, m interface{}) error {
 		Password: d.Get("password").(string),
 		Note:     d.Get("note").(string),
 	}
-	client := m.(*lastpass.Client)
+	if len(generate) == 1 {
+		settings := generate[0].(map[string]interface{})
+		symbols := settings["use_symbols"].(bool)
+		length := settings["length"].(int)
+		nrSymbols := length + 1 // no symbols by default
+		if symbols {
+			nrSymbols = 4
+		}
+		pw, err := password.Generate(length, (length / 4), (length / nrSymbols), false, false)
+		if err != nil {
+			return err
+		}
+		s.Password = pw
+	}
 	s, err := client.Create(s)
 	if err != nil {
 		return err
