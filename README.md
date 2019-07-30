@@ -103,12 +103,14 @@ The ID needs to be a unique numerical value.
 
 **Attributes Reference**
 
-* `fullname` - (Calculated) 
-* `last_modified_gmt` - (Calculated) 
-* `last_touch` - (Calculated) 
-* `group` - (Calculated) 
-* `password` - (Calculated) - only if argument is not set.
-* `note` - (Calculated) - only if argument is not set.
+* `fullname` - (Computed) 
+* `username` - (Computed)
+* `password` - (Computed)
+* `last_modified_gmt` - (Computed) 
+* `last_touch` - (Computed) 
+* `group` - (Computed) 
+* `url` - (Computed) 
+* `note` - (Computed)
 
 ### data source lastpass_secret
 
@@ -118,12 +120,12 @@ The ID needs to be a unique numerical value.
 
 **Attributes Reference**
 
-* `name` - (Calculated) 
-* `fullname` - (Calculated) 
-* `username` - (Calculated) 
-* `password` - (Calculated) 
-* `last_modified_gmt` - (Calculated) 
-* `last_touch` - (Calculated) 
-* `group` - (Calculated) 
-* `url` - (Calculated) 
-* `note` - (Optional)
+* `name` - (Computed) 
+* `fullname` - (Computed) 
+* `username` - (Computed) 
+* `password` - (Computed) 
+* `last_modified_gmt` - (Computed) 
+* `last_touch` - (Computed) 
+* `group` - (Computed) 
+* `url` - (Computed) 
+* `note` - (Computed)
