@@ -34,7 +34,9 @@ func (c *Client) Read(id string) ([]Secret, error) {
 		return secrets, err
 	}
 	for i := range secrets {
-		secrets[i].Note = secrets[i].Note + "\n" // lastpass trims new line, provokes constant changes.
+		if strings.Contains(secrets[i].Note, "\n") {
+			secrets[i].Note = secrets[i].Note + "\n" // lastpass trims new line, add back to multiline notes.
+		}
 	}
 	return secrets, nil
 }
