@@ -210,6 +210,7 @@ github.com/microcosm-cc/bluemonday v1.0.1/go.mod h1:hsXNsILzKxV+sX77C5b8FSuKF00v
 github.com/miekg/dns v1.0.8/go.mod h1:W1PPwlIAgtquWBMBEV9nkV9Cazfe8ScdGz/Lj7v3Nrg=
 github.com/mitchellh/cli v1.0.0 h1:iGBIsUe3+HZ/AD/Vd7DErOt5sU9fa8Uj7A2s1aggv1Y=
 github.com/mitchellh/cli v1.0.0/go.mod h1:hNIlj7HEI86fIcpObd7a0FcrxTWetlwJDGcceTlRvqc=
+github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db h1:62I3jR2EmQ4l5rM/4FEfDWcRD+abF5XlKShorW5LRoQ=
 github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db/go.mod h1:l0dey0ia/Uv7NcFFVbCLtqEBQbrT4OCwCSKTEv6enCw=
 github.com/mitchellh/copystructure v1.0.0 h1:Laisrj+bAB6b/yJwB5Bt3ITZhGJdqmxquMKeZ+mmkFQ=
 github.com/mitchellh/copystructure v1.0.0/go.mod h1:SNtv71yrdKgLRyLFxmLdkAbkKEFWgYaq1OVrnRcwhnw=
@@ -242,6 +243,8 @@ github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190726144154-0c30
 github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190726144154-0c30d73c45a9/go.mod h1:z5iXfrz46PoTqX+8vLzTYIpha60klaoHvfxe0IQUscs=
 github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730084914-11715c73b5f0 h1:4n3viCtU9zz3LY81C8rt8FpbuyWeRelaZCm5+wUFLBA=
 github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730084914-11715c73b5f0/go.mod h1:z5iXfrz46PoTqX+8vLzTYIpha60klaoHvfxe0IQUscs=
+github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730111520-51e149a3f244 h1:3YkmHNeDlQVlgqVjVxd75yn66D+5P+bkanKefLH4/1Q=
+github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730111520-51e149a3f244/go.mod h1:z5iXfrz46PoTqX+8vLzTYIpha60klaoHvfxe0IQUscs=
 github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d/go.mod h1:YUTz3bUH2ZwIWBy3CJBeOBEugqcmXREj14T+iG/4k4U=
 github.com/oklog/run v1.0.0 h1:Ru7dDtJNOyC66gQ5dQmaCa0qIsAUFY3sFpK1Xk8igrw=
 github.com/oklog/run v1.0.0/go.mod h1:dlhp/R75TPv97u0XWUtDeV/lRKWPKSdTuV0TZvrmrQA=
