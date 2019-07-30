@@ -7,15 +7,14 @@ The Lastpass provider is used to read, manage, or destroy secrets inside Lastpas
 ## Getting started:
 
 1. Install [Terraform](https://www.terraform.io/downloads.html) v0.12 or later.
-1. Install the latest pre-compiled binary (Linux/MacOS/Windows) inside `~/.terraform.d/plugins`. Check [releases](https://github.com/nrkno/terraform-provider-lastpass/releases) page.
+1. Install the [latest binary release](https://github.com/nrkno/terraform-provider-lastpass/releases) inside `~/.terraform.d/plugins` on Linux/MacOS, or `%APPDATA%\terraform.d\plugins` on Windows. You may have to create this directory if it doesn’t exist yet.
 2. Make sure to have [lastpass-cli](https://github.com/lastpass/lastpass-cli) in your current `$PATH`. 
-3. Once a plugin is installed, run `terraform init` to initialize it.
+3. Once the provider is configured, run `terraform init` to initialize it.
 
 Bonus: 
 
 - Set `LPASS_AGENT_TIMEOUT=86400` inside your `~/.lpass/env` to stay logged in for 24h. Set to `0` to never logout (less secure).
 - Set `LASTPASS_USER` and `LASTPASS_PASSWORD` env variables to avoid writing login to your .tf-file.
-
 
 ## Example Usage:
 
