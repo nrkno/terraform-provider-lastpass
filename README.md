@@ -107,7 +107,8 @@ The ID needs to be a unique numerical value.
 * `last_modified_gmt` - (Calculated) 
 * `last_touch` - (Calculated) 
 * `group` - (Calculated) 
-
+* `password` - (Calculated) - only if argument is not set.
+* `note` - (Calculated) - only if argument is not set.
 
 ### data source lastpass_secret
 
