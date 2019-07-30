@@ -39,7 +39,7 @@ func ResourceSecret() *schema.Resource {
 				Optional:      true,
 				Sensitive:     true,
 				Computed:      true,
-				Description:   "The password contents. Either `password` or `generate` must be defined.",
+				Description:   "The password content. Either `password` or `generate` must be defined.",
 			},
 			"generate": {
 				Type:          schema.TypeList,
@@ -79,9 +79,11 @@ func ResourceSecret() *schema.Resource {
 				Optional: true,
 			},
 			"note": {
-				Type:      schema.TypeString,
-				Optional:  true,
-				Sensitive: true,
+				Type:        schema.TypeString,
+				Optional:    true,
+				Sensitive:   true,
+				Computed:    true,
+				Description: "The secret note content.",
 			},
 		},
 	}
