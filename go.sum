@@ -245,6 +245,12 @@ github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730084914-1171
 github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730084914-11715c73b5f0/go.mod h1:z5iXfrz46PoTqX+8vLzTYIpha60klaoHvfxe0IQUscs=
 github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730111520-51e149a3f244 h1:3YkmHNeDlQVlgqVjVxd75yn66D+5P+bkanKefLH4/1Q=
 github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730111520-51e149a3f244/go.mod h1:z5iXfrz46PoTqX+8vLzTYIpha60klaoHvfxe0IQUscs=
+github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730134845-515189a4b5f9 h1:eyPrVUEI0wQjCy+6fthOXu/h5glEJP6baaQ6Wmm8y5E=
+github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730134845-515189a4b5f9/go.mod h1:z5iXfrz46PoTqX+8vLzTYIpha60klaoHvfxe0IQUscs=
+github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730135039-b4d0a0224570 h1:N/fGAIxcanq8xFa2FZhwMXgp3cbRn6FYpg4KsWI9bIw=
+github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730135039-b4d0a0224570/go.mod h1:z5iXfrz46PoTqX+8vLzTYIpha60klaoHvfxe0IQUscs=
+github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730210258-4cdbd6aee3f2 h1:QqoAblFObYY1CJxps7pZ5PIf1VicTXBwPm71owyzZ4w=
+github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190730210258-4cdbd6aee3f2/go.mod h1:z5iXfrz46PoTqX+8vLzTYIpha60klaoHvfxe0IQUscs=
 github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d/go.mod h1:YUTz3bUH2ZwIWBy3CJBeOBEugqcmXREj14T+iG/4k4U=
 github.com/oklog/run v1.0.0 h1:Ru7dDtJNOyC66gQ5dQmaCa0qIsAUFY3sFpK1Xk8igrw=
 github.com/oklog/run v1.0.0/go.mod h1:dlhp/R75TPv97u0XWUtDeV/lRKWPKSdTuV0TZvrmrQA=
