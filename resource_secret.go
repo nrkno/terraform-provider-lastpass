@@ -32,6 +32,7 @@ func ResourceSecret() *schema.Resource {
 			"username": {
 				Type:     schema.TypeString,
 				Optional: true,
+				Computed: true,
 			},
 			"password": {
 				Type:          schema.TypeString,
@@ -77,6 +78,7 @@ func ResourceSecret() *schema.Resource {
 			"url": {
 				Type:     schema.TypeString,
 				Optional: true,
+				Computed: true,
 			},
 			"note": {
 				Type:        schema.TypeString,
@@ -128,23 +130,26 @@ func ResourceSecretCreate(d *schema.ResourceData, m interface{}) error {
 // ResourceSecretRead is used to sync the local state with the actual state (upstream/lastpass)
 func ResourceSecretRead(d *schema.ResourceData, m interface{}) error {
 	client := m.(*lastpass.Client)
-	s, err := client.Read(d.Id())
+	secrets, err := client.Read(d.Id())
 	if err != nil {
-		if s.ID == "0" {
-			d.SetId("")
-			return nil
-		}
 		return err
 	}
-	d.Set("name", s.Name)
-	d.Set("fullname", s.Fullname)
-	d.Set("username", s.Username)
-	d.Set("password", s.Password)
-	d.Set("last_modified_gmt", s.LastModifiedGmt)
-	d.Set("last_touch", s.LastTouch)
-	d.Set("group", s.Group)
-	d.Set("url", s.URL)
-	d.Set("note", s.Note)
+	if len(secrets) == 0 {
+		d.SetId("")
+		return nil
+	} else if len(secrets) > 1 {
+		var err = errors.New("got duplicate IDs")
+		return err
+	}
+	d.Set("name", secrets[0].Name)
+	d.Set("fullname", secrets[0].Fullname)
+	d.Set("username", secrets[0].Username)
+	d.Set("password", secrets[0].Password)
+	d.Set("last_modified_gmt", secrets[0].LastModifiedGmt)
+	d.Set("last_touch", secrets[0].LastTouch)
+	d.Set("group", secrets[0].Group)
+	d.Set("url", secrets[0].URL)
+	d.Set("note", secrets[0].Note)
 	return nil
 }
 
@@ -183,18 +188,25 @@ func ResourceSecretImporter(d *schema.ResourceData, m interface{}) ([]*schema.Re
 		return nil, err
 	}
 	client := m.(*lastpass.Client)
-	s, err := client.Read(d.Id())
+	secrets, err := client.Read(d.Id())
 	if err != nil {
 		return nil, err
 	}
-	d.Set("name", s.Name)
-	d.Set("fullname", s.Fullname)
-	d.Set("username", s.Username)
-	d.Set("password", s.Password)
-	d.Set("last_modified_gmt", s.LastModifiedGmt)
-	d.Set("last_touch", s.LastTouch)
-	d.Set("group", s.Group)
-	d.Set("url", s.URL)
-	d.Set("note", s.Note)
+	if len(secrets) == 0 {
+		var err = errors.New("ID not found.")
+		return nil, err
+	} else if len(secrets) > 1 {
+		var err = errors.New("got duplicate IDs")
+		return nil, err
+	}
+	d.Set("name", secrets[0].Name)
+	d.Set("fullname", secrets[0].Fullname)
+	d.Set("username", secrets[0].Username)
+	d.Set("password", secrets[0].Password)
+	d.Set("last_modified_gmt", secrets[0].LastModifiedGmt)
+	d.Set("last_touch", secrets[0].LastTouch)
+	d.Set("group", secrets[0].Group)
+	d.Set("url", secrets[0].URL)
+	d.Set("note", secrets[0].Note)
 	return []*schema.ResourceData{d}, nil
 }

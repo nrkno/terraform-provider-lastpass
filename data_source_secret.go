@@ -67,23 +67,26 @@ func DataSourceSecretRead(d *schema.ResourceData, m interface{}) error {
 		err := errors.New("Not a valid Lastpass ID")
 		return err
 	}
-	s, err := client.Read(id)
+	secrets, err := client.Read(id)
 	if err != nil {
-		if s.ID == "0" {
-			d.SetId("")
-			return nil
-		}
 		return err
 	}
-	d.SetId(s.ID)
-	d.Set("name", s.Name)
-	d.Set("fullname", s.Fullname)
-	d.Set("username", s.Username)
-	d.Set("password", s.Password)
-	d.Set("last_modified_gmt", s.LastModifiedGmt)
-	d.Set("last_touch", s.LastTouch)
-	d.Set("group", s.Group)
-	d.Set("url", s.URL)
-	d.Set("note", s.Note)
+	if len(secrets) == 0 {
+		d.SetId("")
+		return nil
+	} else if len(secrets) > 1 {
+		var err = errors.New("got duplicate IDs")
+		return err
+	}
+	d.SetId(secrets[0].ID)
+	d.Set("name", secrets[0].Name)
+	d.Set("fullname", secrets[0].Fullname)
+	d.Set("username", secrets[0].Username)
+	d.Set("password", secrets[0].Password)
+	d.Set("last_modified_gmt", secrets[0].LastModifiedGmt)
+	d.Set("last_touch", secrets[0].LastTouch)
+	d.Set("group", secrets[0].Group)
+	d.Set("url", secrets[0].URL)
+	d.Set("note", secrets[0].Note)
 	return nil
 }

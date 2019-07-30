@@ -8,14 +8,14 @@ import (
 	"strings"
 )
 
-// Fetch secret from upstream to update local secret
-func (c *Client) Read(id string) (Secret, error) {
-	var s Secret
+// Fetch secrets from upstream
+func (c *Client) Read(id string) ([]Secret, error) {
+	var secrets []Secret
 	err := c.login()
 	if err != nil {
-		return s, err
+		return secrets, err
 	}
-	cmd := exec.Command("lpass", "show", id, "--json", "-x")
+	cmd := exec.Command("lpass", "show", "-G", id, "--json", "-x")
 	var outbuf, errbuf bytes.Buffer
 	cmd.Stdout = &outbuf
 	cmd.Stderr = &errbuf
@@ -23,21 +23,18 @@ func (c *Client) Read(id string) (Secret, error) {
 	if err != nil {
 		// Make sure the secret is not removed manually.
 		if strings.Contains(errbuf.String(), "Could not find specified account") {
-			// If no secret is found, set to 0 for deletion.
-			s.ID = "0"
-			return s, err
+			// return empty secret list
+			return secrets, err
 		}
 		var err = errors.New(errbuf.String())
-		return s, err
+		return secrets, err
 	}
-	var secrets []Secret
 	err = json.Unmarshal(outbuf.Bytes(), &secrets)
 	if err != nil {
-		return s, err
+		return secrets, err
 	}
-	if secrets[0].URL == "http://" {
-		secrets[0].URL = ""
+	for i := range secrets {
+		secrets[i].Note = secrets[i].Note + "\n" // lastpass trims new line, provokes constant changes.
 	}
-	secrets[0].Note = secrets[0].Note + "\n" // lastpass trims new line, provokes constant changes.
-	return secrets[0], nil
+	return secrets, nil
 }

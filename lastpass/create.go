@@ -41,11 +41,11 @@ func (c *Client) Create(s Secret) (Secret, error) {
 		return s, err
 	}
 	if len(secrets) > 1 {
-		err := errors.New("more than one secret with same name")
+		err := errors.New("more than one secret with same name, unable to determine ID")
 		return s, err
 	}
 	if secrets[0].ID == "0" {
-		err := errors.New("got invalid ID 0, possible problem with lpass sync")
+		err := errors.New("got invalid ID 0, problem with lastpass sync")
 		return secrets[0], err
 	}
 	return secrets[0], nil

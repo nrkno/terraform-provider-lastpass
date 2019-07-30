@@ -62,11 +62,11 @@ GHJ
 	if err != nil {
 		t.Error(err)
 	}
-	s, err = client.Read(s.ID)
+	secrets, err := client.Read(s.ID)
 	if err != nil {
 		t.Error(err)
 	}
-	if s.Name != "myintegrationtest2" && s.URL != "https://example2.com" && s.Username != "user2" && s.Password != "pw2" && s.Note != "123\n456\n789" {
+	if secrets[0].Name != "myintegrationtest2" && secrets[0].URL != "https://example2.com" && secrets[0].Username != "user2" && secrets[0].Password != "pw2" && secrets[0].Note != "123\n456\n789" {
 		t.Error("Read() did not receive expected values.")
 	}
 	err = client.Delete(s.ID)
