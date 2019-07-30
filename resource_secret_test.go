@@ -10,21 +10,20 @@ import (
 	"github.com/hashicorp/terraform/terraform"
 )
 
-func TestAccLastpassSecret_Basic(t *testing.T) {
+func TestAccResourceSecret_Basic(t *testing.T) {
 	var secret lastpass.Secret
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccProviders,
-		CheckDestroy: testAccCheckLastpassSecretDestroy,
+		CheckDestroy: testAccResourceSecretDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCheckLastpassSecretConfig_basic,
+				Config: testAccResourceSecretConfig_basic,
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckLastpassSecretExists("lastpass_secret.foobar", &secret),
-					testAccCheckLastpassSecretAttributes(&secret),
+					testAccResourceSecretExists("lastpass_secret.foobar", &secret),
 					resource.TestCheckResourceAttr(
-						"lastpass_secret.foobar", "name", "terraform-provider-lastpass basic test"),
+						"lastpass_secret.foobar", "name", "terraform-provider-lastpass resource basic test"),
 					resource.TestCheckResourceAttr(
 						"lastpass_secret.foobar", "username", "gopher"),
 					resource.TestCheckResourceAttr(
@@ -37,7 +36,7 @@ func TestAccLastpassSecret_Basic(t *testing.T) {
 	})
 }
 
-func testAccCheckLastpassSecretDestroy(s *terraform.State) error {
+func testAccResourceSecretDestroy(s *terraform.State) error {
 	provider := testAccProvider.Meta().(*lastpass.Client)
 	for _, rs := range s.RootModule().Resources {
 		if rs.Type != "lastpass_secret" {
@@ -52,7 +51,7 @@ func testAccCheckLastpassSecretDestroy(s *terraform.State) error {
 	return nil
 }
 
-func testAccCheckLastpassSecretExists(n string, secret *lastpass.Secret) resource.TestCheckFunc {
+func testAccResourceSecretExists(n string, secret *lastpass.Secret) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
@@ -74,18 +73,9 @@ func testAccCheckLastpassSecretExists(n string, secret *lastpass.Secret) resourc
 	}
 }
 
-func testAccCheckLastpassSecretAttributes(secret *lastpass.Secret) resource.TestCheckFunc {
-	return func(s *terraform.State) error {
-		if secret.Name != "terraform-provider-lastpass basic test" {
-			return fmt.Errorf("Bad content: %s", secret.Name)
-		}
-		return nil
-	}
-}
-
-const testAccCheckLastpassSecretConfig_basic = `
+const testAccResourceSecretConfig_basic = `
 resource "lastpass_secret" "foobar" {
-    name = "terraform-provider-lastpass basic test"
+    name = "terraform-provider-lastpass resource basic test"
     username = "gopher"
     password = "hunter2"
     note = "secret note"
