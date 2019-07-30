@@ -15,7 +15,7 @@ func (c *Client) Read(id string) ([]Secret, error) {
 	if err != nil {
 		return secrets, err
 	}
-	cmd := exec.Command("lpass", "show", "-G", id, "--json", "-x")
+	cmd := exec.Command("lpass", "--sync=now", "show", "-G", id, "--json", "-x")
 	var outbuf, errbuf bytes.Buffer
 	cmd.Stdout = &outbuf
 	cmd.Stderr = &errbuf
