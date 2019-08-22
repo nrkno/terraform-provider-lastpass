@@ -79,13 +79,13 @@ The ID needs to be a unique numerical value.
 
 ## provider lastpass
 
-* `username` - (Optional) 
+* `username` - (Required) 
   * Can be set via `LASTPASS_USER` env variable.
-  * Leave empty if you prefer to login manually.
+  * Do not set if you prefer to be prompted.
   * With 2FA enabled you will need to login manually with `--trust` at least once.
-* `password` - (Optional) Only required if username is set.
+* `password` - (Required)
   * Can be set via `LASTPASS_PASSWORD` env variable.
-
+  * Do not set if you prefer to be prompted.
 
 ### resource lastpass_secret
 
