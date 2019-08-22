@@ -61,7 +61,7 @@ resource "aws_db_instance" "mydb" {
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
   name                 = "mydb"
-  username             = data.lastpass_secret.mydb.user
+  username             = data.lastpass_secret.mydb.username
   password             = data.lastpass_secret.mydb.password
 }
 
