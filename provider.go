@@ -25,16 +25,16 @@ func Provider() *schema.Provider {
 		Schema: map[string]*schema.Schema{
 			"username": {
 				Type:        schema.TypeString,
-				Optional:    true,
+				Required:    true,
 				Description: "Lastpass login e-mail",
-				DefaultFunc: schema.EnvDefaultFunc("LASTPASS_USER", ""),
+				DefaultFunc: schema.EnvDefaultFunc("LASTPASS_USER", nil),
 			},
 			"password": {
 				Type:        schema.TypeString,
-				Optional:    true,
+				Required:    true,
 				Sensitive:   true,
 				Description: "Lastpass login password",
-				DefaultFunc: schema.EnvDefaultFunc("LASTPASS_PASSWORD", ""),
+				DefaultFunc: schema.EnvDefaultFunc("LASTPASS_PASSWORD", nil),
 			},
 		},
 		ConfigureFunc: providerConfigure,
