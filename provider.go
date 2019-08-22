@@ -42,8 +42,10 @@ func Provider() *schema.Provider {
 }
 
 func providerConfigure(d *schema.ResourceData) (interface{}, error) {
-	if d.Get("username").(string) != "" && d.Get("password").(string) == "" {
-		return nil, errors.New("lastpass password is not set")
+	if d.Get("username").(string) == "" {
+		return nil, errors.New("provider username can not be empty string")
+	} else if d.Get("password").(string) == "" {
+		return nil, errors.New("provider password can not be empty string")
 	}
 	client := lastpass.Client{
 		Username: d.Get("username").(string),
