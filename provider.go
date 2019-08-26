@@ -1,8 +1,6 @@
 package main
 
 import (
-	"errors"
-
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/nrkno/terraform-provider-lastpass/lastpass"
 )
@@ -42,11 +40,6 @@ func Provider() *schema.Provider {
 }
 
 func providerConfigure(d *schema.ResourceData) (interface{}, error) {
-	if d.Get("username").(string) == "" {
-		return nil, errors.New("provider username can not be empty string")
-	} else if d.Get("password").(string) == "" {
-		return nil, errors.New("provider password can not be empty string")
-	}
 	client := lastpass.Client{
 		Username: d.Get("username").(string),
 		Password: d.Get("password").(string),
