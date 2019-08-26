@@ -81,11 +81,11 @@ The ID needs to be a unique numerical value.
 
 * `username` - (Required) 
   * Can be set via `LASTPASS_USER` env variable.
-  * Do not set if you prefer to be prompted.
+  * Can be set to empty string for manual lpass login.
   * With 2FA enabled you will need to login manually with `--trust` at least once.
 * `password` - (Required)
   * Can be set via `LASTPASS_PASSWORD` env variable.
-  * Do not set if you prefer to be prompted.
+  * Can be set to empty string for manual lpass login.
 
 ### resource lastpass_secret
 
