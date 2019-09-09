@@ -128,3 +128,4 @@ The ID needs to be a unique numerical value.
 * `group` - (Computed) 
 * `url` - (Computed) 
 * `note` - (Computed)
+* `custom_fields` - (Computed)
