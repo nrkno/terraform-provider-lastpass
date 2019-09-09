@@ -37,6 +37,7 @@ func (c *Client) Read(id string) ([]Secret, error) {
 		if strings.Contains(secrets[i].Note, "\n") {
 			secrets[i].Note = secrets[i].Note + "\n" // lastpass trims new line, add back to multiline notes.
 		}
+		secrets[i].genCustomFields()
 	}
 	return secrets, nil
 }

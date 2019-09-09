@@ -6,27 +6,53 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"regexp"
+	"strings"
 )
 
 // Secret describes a Lastpass object.
 type Secret struct {
-	Fullname        string `json:"fullname"`
-	Group           string `json:"group"`
-	ID              string `json:"id"`
-	LastModifiedGmt string `json:"last_modified_gmt"`
-	LastTouch       string `json:"last_touch"`
-	Name            string `json:"name"`
-	Note            string `json:"note"`
-	Password        string `json:"password"`
-	Share           string `json:"share"`
-	URL             string `json:"url"`
-	Username        string `json:"username"`
+	Fullname        string            `json:"fullname"`
+	Group           string            `json:"group"`
+	ID              string            `json:"id"`
+	LastModifiedGmt string            `json:"last_modified_gmt"`
+	LastTouch       string            `json:"last_touch"`
+	Name            string            `json:"name"`
+	Note            string            `json:"note"`
+	Password        string            `json:"password"`
+	Share           string            `json:"share"`
+	URL             string            `json:"url"`
+	Username        string            `json:"username"`
+	CustomFields    map[string]string `json:"custom_fields"`
 }
 
 // Client is our Lastpass (lpass) wrapper client.
 type Client struct {
 	Username string
 	Password string
+}
+
+func (s *Secret) genCustomFields() {
+	notes := make(map[string]string)
+	if strings.HasPrefix(s.Note, "NoteType:") {
+		splitted := strings.Split(s.Note, "\n")
+		for _, split := range splitted {
+			re := regexp.MustCompile(`:`)
+			s := re.Split(split, 2)
+			if s[0] == "Notes" {
+				break
+			}
+			if len(s) == 2 {
+				notes[s[0]] = s[1]
+			}
+		}
+		// Fix for Notes with multiline. Always last in end of the string.
+		n := strings.Split(s.Note, "\nNotes:")
+		if len(n) == 2 {
+			notes["Notes"] = n[1]
+		}
+	}
+	s.CustomFields = notes
 }
 
 func (s *Secret) getTemplate() string {
