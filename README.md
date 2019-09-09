@@ -65,6 +65,11 @@ resource "aws_db_instance" "mydb" {
   password             = data.lastpass_secret.mydb.password
 }
 
+# data source with custom note template 
+output "custom_field" {
+    value = data.lastpass_secret.mydb.custom_fields.host
+}
+
 ```
 
 ## Importer
