@@ -55,6 +55,11 @@ func DataSourceSecret() *schema.Resource {
 				Computed:  true,
 				Sensitive: true,
 			},
+			"custom_fields": {
+				Type:      schema.TypeMap,
+				Computed:  true,
+				Sensitive: true,
+			},
 		},
 	}
 }
@@ -88,5 +93,6 @@ func DataSourceSecretRead(d *schema.ResourceData, m interface{}) error {
 	d.Set("group", secrets[0].Group)
 	d.Set("url", secrets[0].URL)
 	d.Set("note", secrets[0].Note)
+	d.Set("custom_fields", secrets[0].CustomFields)
 	return nil
 }
