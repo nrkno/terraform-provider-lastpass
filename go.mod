@@ -1,6 +1,6 @@
 module github.com/nrkno/terraform-provider-lastpass
 
-go 1.12
+go 1.13
 
 require (
 	github.com/hashicorp/terraform v0.12.7
