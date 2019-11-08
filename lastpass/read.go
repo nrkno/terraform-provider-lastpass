@@ -38,6 +38,7 @@ func (c *Client) Read(id string) ([]Secret, error) {
 			secrets[i].Note = secrets[i].Note + "\n" // lastpass trims new line, add back to multiline notes.
 		}
 		secrets[i].genCustomFields()
+		secrets[i].Name = secrets[i].Fullname // lastpass trims path from name, so we need to copy fullname
 	}
 	return secrets, nil
 }
