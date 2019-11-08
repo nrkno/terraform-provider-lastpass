@@ -24,6 +24,7 @@ func ResourceSecret() *schema.Resource {
 			"name": {
 				Type:     schema.TypeString,
 				Required: true,
+				ForceNew: true,
 			},
 			"fullname": {
 				Type:     schema.TypeString,
