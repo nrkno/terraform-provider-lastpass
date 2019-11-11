@@ -4,6 +4,6 @@ go 1.13
 
 require (
 	github.com/hashicorp/terraform v0.12.13
-	github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20190909114509-cadf4c4d528a
+	github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20191108141243-51802042e212
 	github.com/sethvargo/go-password v0.1.3
 )
