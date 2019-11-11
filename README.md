@@ -20,7 +20,7 @@ Bonus:
 
 ```hcl
 provider "lastpass" {
-    version = "0.3.0"
+    version = "0.4.2"
     username = "user@example.com"
     password = file("${path.module}/.lpass")
 } 
