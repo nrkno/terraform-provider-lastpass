@@ -6,7 +6,7 @@ The Lastpass provider is used to read, manage, or destroy secrets inside Lastpas
 
 ## Getting started:
 
-1. Install [Terraform](https://www.terraform.io/downloads.html) v0.12 or later.
+1. Install [Terraform](https://www.terraform.io/downloads.html) v0.12 or later (older versions should work but has not been tested).
 1. Install the [latest binary release](https://github.com/nrkno/terraform-provider-lastpass/releases) inside `~/.terraform.d/plugins` on Linux/MacOS, or `%APPDATA%\terraform.d\plugins` on Windows. You may have to create this directory if it doesn’t exist yet.
 2. Make sure to have [lastpass-cli](https://github.com/lastpass/lastpass-cli) in your current `$PATH`. 
 3. Once the provider is configured, run `terraform init` to initialize it.
