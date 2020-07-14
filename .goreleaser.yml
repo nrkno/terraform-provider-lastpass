@@ -9,7 +9,7 @@ builds:
     env:
       - GO111MODULE=on
 archives:
-  format: tar.gz
+- format: tar.gz
   files:
     - LICENSE
     - README.md
