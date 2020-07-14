@@ -8,7 +8,7 @@ builds:
     binary: "terraform-provider-lastpass_v{{ .Version }}"
     env:
       - GO111MODULE=on
-archive:
+archives:
   format: tar.gz
   files:
     - LICENSE
