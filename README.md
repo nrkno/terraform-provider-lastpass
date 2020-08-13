@@ -5,9 +5,35 @@
 
 The Lastpass provider is used to read, manage, or destroy secrets inside Lastpass. Goodbye secret .tfvars files 👋
 
+```hcl
+terraform {
+  required_providers {
+    lastpass = {
+      source = "nrkno/lastpass"
+      version = "0.5.0"
+    }
+  }
+}
 
-- [Document](https://registry.terraform.io/providers/nrkno/terraform-provider-lastpass/latest/docs)
-- [Terraform Registry](https://registry.terraform.io/providers/nrkno/terraform-provider-lastpass/latest/docs)
+resource "lastpass_secret" "mysecret" {
+    name = "My site"
+    username = "foobar"
+    password = file("${path.module}/secret")
+    url = "https://example.com"
+    note = <<EOF
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sed elit nec orci
+cursus rhoncus. Morbi lacus turpis, volutpat in lobortis vel, mattis nec magna.
+Cras gravida libero vitae nisl iaculis ultrices. Fusce odio ligula, pharetra ac
+viverra semper, consequat quis risus.
+EOF
+}
+
+```
+
+Documentation and examples can be found inside the Terraform registry:
+
+- [Terraform Registry](https://registry.terraform.io/providers/nrkno/lastpass/latest)
+- [Documentation](https://registry.terraform.io/providers/nrkno/lastpass/latest/docs)
  
 ## License
 

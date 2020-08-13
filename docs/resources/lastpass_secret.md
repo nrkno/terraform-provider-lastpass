@@ -1,7 +1,5 @@
 # lastpass_secret Resource
 
-Store secret in lastpass.
-
 ## Example Usage
 
 ```hcl
