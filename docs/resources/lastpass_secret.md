@@ -19,12 +19,9 @@ EOF
 
 ## Argument Reference
 
-* `name` - (Required) Must be unique, and can contain full directory path. Changing name will force recreation, and generated passwords will change.
+* `name` - (Required) Must be unique, and can contain full directory path. Changing name will force recreation.
 * `username` - (Optional) 
 * `password` - (Optional) 
-* `generate` - (Optional) Settings for autogenerating password. Either password or generate must be defined.
-  * `length` - (Required) The length of the password to generate.
-  * `use_symbols` - (Optional) Whether the secret should contain symbols.
 * `url` - (Optional) 
 * `note` - (Optional)
 

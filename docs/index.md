@@ -11,23 +11,16 @@ Make sure to have [lastpass-cli](https://github.com/lastpass/lastpass-cli) in yo
 ## Example Usage
 
 ```hcl
-terraform {
-  required_providers {
-    lastpass = {
-      source = "nrkno/lastpass"
-      version = "0.5.0"
-    }
-  }
+
+resource "random_password" "pw" {
+  length = 32
+  special = false
 }
 
-# secret with random generated password
 resource "lastpass_secret" "mylogin" {
     name = "My service"
     username = "foobar"
-    generate {
-        length = 24
-        use_symbols = false
-    }
+    password = random_password.pw.result
 }
 
 resource "lastpass_secret" "mysecret" {
