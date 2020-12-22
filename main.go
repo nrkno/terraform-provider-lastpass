@@ -9,8 +9,8 @@ import (
 
 func main() {
 	plugin.Serve(&plugin.ServeOpts{
-        ProviderFunc: func() *schema.Provider {
-			return Provider()
+		ProviderFunc: func() *schema.Provider {
+			return lastpass.Provider()
 		},
 	})
 }
