@@ -15,8 +15,8 @@ require (
 	github.com/mitchellh/go-testing-interface v1.14.1 // indirect
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
 	github.com/mitchellh/mapstructure v1.4.0 // indirect
-	github.com/nrkno/terraform-provider-lastpass/api v0.0.0-20201222144739-05b85be90bd9 // indirect
-	github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20201222150143-ab9b074fcdf7
+	github.com/nrkno/terraform-provider-lastpass/api v0.0.0-20201222150333-3e37b62e292d // indirect
+	github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20201222150333-3e37b62e292d
 	github.com/zclconf/go-cty v1.7.1 // indirect
 	golang.org/x/net v0.0.0-20201216054612-986b41b23924 // indirect
 	golang.org/x/text v0.3.4 // indirect
