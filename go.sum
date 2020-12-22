@@ -294,8 +294,8 @@ github.com/mitchellh/reflectwalk v1.0.1 h1:FVzMWA5RllMAKIdUSC8mdWo3XtwoecrH79BY7
 github.com/mitchellh/reflectwalk v1.0.1/go.mod h1:mSTlrgnPZtwu0c4WaC2kGObEpuNDbx0jmZXqmk4esnw=
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e h1:fD57ERR4JtEqsWbfPhv4DMiApHyliiK5xCTNVSPiaAs=
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
-github.com/nrkno/terraform-provider-lastpass/api v0.0.0-20201222150333-3e37b62e292d h1:Ufu4qeMClzMANXZgqyfoBgYHpPj/VeVDHK9FvTFM0Wk=
-github.com/nrkno/terraform-provider-lastpass/api v0.0.0-20201222150333-3e37b62e292d/go.mod h1:l5BXcZG3M/8eqDrGGWmhnEzxCNzX9eNko38OF4e4uvE=
+github.com/nrkno/terraform-provider-lastpass/api v0.0.0-20201222183124-f12948125e45 h1:ilZ1IvohMzTev2a1qHPLialaKeoPljUZYcBbOfSi+BE=
+github.com/nrkno/terraform-provider-lastpass/api v0.0.0-20201222183124-f12948125e45/go.mod h1:l5BXcZG3M/8eqDrGGWmhnEzxCNzX9eNko38OF4e4uvE=
 github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20201222150333-3e37b62e292d h1:iG2fIjIomRj1zJF/Ljg5tjzblqHi9tvu5DoH6TN0xQI=
 github.com/nrkno/terraform-provider-lastpass/lastpass v0.0.0-20201222150333-3e37b62e292d/go.mod h1:HQzIwH5v6DDtgJAAz4NDxKSyJ+izPg9C2woY550FDAg=
 github.com/nsf/jsondiff v0.0.0-20200515183724-f29ed568f4ce h1:RPclfga2SEJmgMmz2k+Mg7cowZ8yv4Trqw9UsJby758=
