@@ -1,4 +1,4 @@
-package main
+package lastpass
 
 import (
 	"errors"
@@ -66,7 +66,7 @@ func DataSourceSecret() *schema.Resource {
 
 // DataSourceSecretRead reads resource from upstream/lastpass
 func DataSourceSecretRead(d *schema.ResourceData, m interface{}) error {
-	client := m.(*lastpass.Client)
+	client := m.(*api.Client)
 	id := d.Get("id").(string)
 	if _, err := strconv.Atoi(id); err != nil {
 		err := errors.New("Not a valid Lastpass ID")

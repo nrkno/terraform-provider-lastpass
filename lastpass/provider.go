@@ -1,4 +1,4 @@
-package main
+package lastpass
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -40,7 +40,7 @@ func Provider() *schema.Provider {
 }
 
 func providerConfigure(d *schema.ResourceData) (interface{}, error) {
-	client := lastpass.Client{
+	client := api.Client{
 		Username: d.Get("username").(string),
 		Password: d.Get("password").(string),
 	}

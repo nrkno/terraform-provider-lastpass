@@ -1,4 +1,4 @@
-package main
+package lastpass
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 )
 
 func TestAccResourceSecret_Basic(t *testing.T) {
-	var secret lastpass.Secret
+	var secret api.Secret
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccProviders,
@@ -35,7 +35,7 @@ func TestAccResourceSecret_Basic(t *testing.T) {
 }
 
 func testAccResourceSecretDestroy(s *terraform.State) error {
-	provider := testAccProvider.Meta().(*lastpass.Client)
+	provider := testAccProvider.Meta().(*api.Client)
 	for _, rs := range s.RootModule().Resources {
 		if rs.Type != "lastpass_secret" {
 			continue
@@ -49,7 +49,7 @@ func testAccResourceSecretDestroy(s *terraform.State) error {
 	return nil
 }
 
-func testAccResourceSecretExists(n string, secret *lastpass.Secret) resource.TestCheckFunc {
+func testAccResourceSecretExists(n string, secret *api.Secret) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
@@ -58,7 +58,7 @@ func testAccResourceSecretExists(n string, secret *lastpass.Secret) resource.Tes
 		if rs.Primary.ID == "" {
 			return fmt.Errorf("No Secret ID is set")
 		}
-		provider := testAccProvider.Meta().(*lastpass.Client)
+		provider := testAccProvider.Meta().(*api.Client)
 		secrets, err := provider.Read(rs.Primary.ID)
 		if err != nil {
 			return err

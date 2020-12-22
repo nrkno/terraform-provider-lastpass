@@ -1,4 +1,4 @@
-package main
+package lastpass
 
 import (
 	"errors"
@@ -70,8 +70,8 @@ func ResourceSecret() *schema.Resource {
 
 // ResourceSecretCreate is used to create a new resource and generate ID.
 func ResourceSecretCreate(d *schema.ResourceData, m interface{}) error {
-	client := m.(*lastpass.Client)
-	s := lastpass.Secret{
+	client := m.(*api.Client)
+	s := api.Secret{
 		Name:     d.Get("name").(string),
 		URL:      d.Get("url").(string),
 		Username: d.Get("username").(string),
@@ -88,7 +88,7 @@ func ResourceSecretCreate(d *schema.ResourceData, m interface{}) error {
 
 // ResourceSecretRead is used to sync the local state with the actual state (upstream/lastpass)
 func ResourceSecretRead(d *schema.ResourceData, m interface{}) error {
-	client := m.(*lastpass.Client)
+	client := m.(*api.Client)
 	secrets, err := client.Read(d.Id())
 	if err != nil {
 		return err
@@ -114,7 +114,7 @@ func ResourceSecretRead(d *schema.ResourceData, m interface{}) error {
 
 // ResourceSecretUpdate is used to update our existing resource
 func ResourceSecretUpdate(d *schema.ResourceData, m interface{}) error {
-	s := lastpass.Secret{
+	s := api.Secret{
 		Name:     d.Get("name").(string),
 		URL:      d.Get("url").(string),
 		Username: d.Get("username").(string),
@@ -122,7 +122,7 @@ func ResourceSecretUpdate(d *schema.ResourceData, m interface{}) error {
 		Note:     d.Get("note").(string),
 		ID:       d.Id(),
 	}
-	client := m.(*lastpass.Client)
+	client := m.(*api.Client)
 	err := client.Update(s)
 	if err != nil {
 		return err
@@ -132,7 +132,7 @@ func ResourceSecretUpdate(d *schema.ResourceData, m interface{}) error {
 
 // ResourceSecretDelete is called to destroy the resource.
 func ResourceSecretDelete(d *schema.ResourceData, m interface{}) error {
-	client := m.(*lastpass.Client)
+	client := m.(*api.Client)
 	err := client.Delete(d.Id())
 	if err != nil {
 		return err
@@ -146,7 +146,7 @@ func ResourceSecretImporter(d *schema.ResourceData, m interface{}) ([]*schema.Re
 		err := errors.New("Not a valid Lastpass ID")
 		return nil, err
 	}
-	client := m.(*lastpass.Client)
+	client := m.(*api.Client)
 	secrets, err := client.Read(d.Id())
 	if err != nil {
 		return nil, err
