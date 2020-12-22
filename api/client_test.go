@@ -1,7 +1,7 @@
 // +build integration
 
 // run with go test -tags=integration
-package lastpass
+package api
 
 import (
 	"os"

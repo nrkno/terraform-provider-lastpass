@@ -1,3 +1,3 @@
-module github.com/nrkno/terraform-provider-lastpass/lastpass
+module github.com/nrkno/terraform-provider-lastpass/api
 
-go 1.13
+go 1.15

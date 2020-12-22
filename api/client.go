@@ -1,4 +1,4 @@
-package lastpass
+package api
 
 import (
 	"bytes"
