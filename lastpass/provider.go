@@ -1,6 +1,9 @@
 package lastpass
 
 import (
+	"context"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/nrkno/terraform-provider-lastpass/api"
 )
@@ -35,14 +38,15 @@ func Provider() *schema.Provider {
 				DefaultFunc: schema.EnvDefaultFunc("LASTPASS_PASSWORD", nil),
 			},
 		},
-		ConfigureFunc: providerConfigure,
+		ConfigureContextFunc: providerConfigure,
 	}
 }
 
-func providerConfigure(d *schema.ResourceData) (interface{}, error) {
+func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
+	var diags diag.Diagnostics
 	client := api.Client{
 		Username: d.Get("username").(string),
 		Password: d.Get("password").(string),
 	}
-	return &client, nil
+	return &client, diags
 }

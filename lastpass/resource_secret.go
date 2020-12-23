@@ -1,9 +1,11 @@
 package lastpass
 
 import (
+	"context"
 	"errors"
 	"strconv"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/nrkno/terraform-provider-lastpass/api"
 )
@@ -11,10 +13,10 @@ import (
 // ResourceSecret describes our lastpass secret resource
 func ResourceSecret() *schema.Resource {
 	return &schema.Resource{
-		Create: ResourceSecretCreate,
-		Read:   ResourceSecretRead,
-		Update: ResourceSecretUpdate,
-		Delete: ResourceSecretDelete,
+		CreateContext: ResourceSecretCreate,
+		ReadContext:   ResourceSecretRead,
+		UpdateContext: ResourceSecretUpdate,
+		DeleteContext: ResourceSecretDelete,
 		Importer: &schema.ResourceImporter{
 			State: ResourceSecretImporter,
 		},
@@ -69,8 +71,9 @@ func ResourceSecret() *schema.Resource {
 }
 
 // ResourceSecretCreate is used to create a new resource and generate ID.
-func ResourceSecretCreate(d *schema.ResourceData, m interface{}) error {
+func ResourceSecretCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	client := m.(*api.Client)
+	var diags diag.Diagnostics
 	s := api.Secret{
 		Name:     d.Get("name").(string),
 		URL:      d.Get("url").(string),
@@ -80,25 +83,28 @@ func ResourceSecretCreate(d *schema.ResourceData, m interface{}) error {
 	}
 	s, err := client.Create(s)
 	if err != nil {
-		return err
+		return diag.FromErr(err)
 	}
 	d.SetId(s.ID)
-	return ResourceSecretRead(d, m)
+	ResourceSecretRead(ctx, d, m)
+
+	return diags
 }
 
 // ResourceSecretRead is used to sync the local state with the actual state (upstream/lastpass)
-func ResourceSecretRead(d *schema.ResourceData, m interface{}) error {
+func ResourceSecretRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	client := m.(*api.Client)
+	var diags diag.Diagnostics
 	secrets, err := client.Read(d.Id())
 	if err != nil {
-		return err
+		return diag.FromErr(err)
 	}
 	if len(secrets) == 0 {
 		d.SetId("")
 		return nil
 	} else if len(secrets) > 1 {
 		var err = errors.New("got duplicate IDs")
-		return err
+		return diag.FromErr(err)
 	}
 	d.Set("name", secrets[0].Name)
 	d.Set("fullname", secrets[0].Fullname)
@@ -109,11 +115,12 @@ func ResourceSecretRead(d *schema.ResourceData, m interface{}) error {
 	d.Set("group", secrets[0].Group)
 	d.Set("url", secrets[0].URL)
 	d.Set("note", secrets[0].Note)
-	return nil
+
+	return diags
 }
 
 // ResourceSecretUpdate is used to update our existing resource
-func ResourceSecretUpdate(d *schema.ResourceData, m interface{}) error {
+func ResourceSecretUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	s := api.Secret{
 		Name:     d.Get("name").(string),
 		URL:      d.Get("url").(string),
@@ -125,19 +132,20 @@ func ResourceSecretUpdate(d *schema.ResourceData, m interface{}) error {
 	client := m.(*api.Client)
 	err := client.Update(s)
 	if err != nil {
-		return err
+		return diag.FromErr(err)
 	}
-	return ResourceSecretRead(d, m)
+	return ResourceSecretRead(ctx, d, m)
 }
 
 // ResourceSecretDelete is called to destroy the resource.
-func ResourceSecretDelete(d *schema.ResourceData, m interface{}) error {
+func ResourceSecretDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	client := m.(*api.Client)
+	var diags diag.Diagnostics
 	err := client.Delete(d.Id())
 	if err != nil {
-		return err
+		return diag.FromErr(err)
 	}
-	return nil
+	return diags
 }
 
 // ResourceSecretImporter is called to import an existing resource.
@@ -152,7 +160,7 @@ func ResourceSecretImporter(d *schema.ResourceData, m interface{}) ([]*schema.Re
 		return nil, err
 	}
 	if len(secrets) == 0 {
-		var err = errors.New("ID not found.")
+		var err = errors.New("ID not found")
 		return nil, err
 	} else if len(secrets) > 1 {
 		var err = errors.New("got duplicate IDs")

@@ -1,9 +1,11 @@
 package lastpass
 
 import (
+	"context"
 	"errors"
 	"strconv"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/nrkno/terraform-provider-lastpass/api"
 )
@@ -11,7 +13,7 @@ import (
 // DataSourceSecret describes our lastpass secret data source
 func DataSourceSecret() *schema.Resource {
 	return &schema.Resource{
-		Read: DataSourceSecretRead,
+		ReadContext: DataSourceSecretRead,
 		Schema: map[string]*schema.Schema{
 			"id": {
 				Type:     schema.TypeString,
@@ -65,23 +67,24 @@ func DataSourceSecret() *schema.Resource {
 }
 
 // DataSourceSecretRead reads resource from upstream/lastpass
-func DataSourceSecretRead(d *schema.ResourceData, m interface{}) error {
+func DataSourceSecretRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	client := m.(*api.Client)
+	var diags diag.Diagnostics
 	id := d.Get("id").(string)
 	if _, err := strconv.Atoi(id); err != nil {
 		err := errors.New("Not a valid Lastpass ID")
-		return err
+		return diag.FromErr(err)
 	}
 	secrets, err := client.Read(id)
 	if err != nil {
-		return err
+		return diag.FromErr(err)
 	}
 	if len(secrets) == 0 {
 		d.SetId("")
-		return nil
+		return diags
 	} else if len(secrets) > 1 {
 		var err = errors.New("got duplicate IDs")
-		return err
+		return diag.FromErr(err)
 	}
 	d.SetId(secrets[0].ID)
 	d.Set("name", secrets[0].Name)
@@ -94,5 +97,5 @@ func DataSourceSecretRead(d *schema.ResourceData, m interface{}) error {
 	d.Set("url", secrets[0].URL)
 	d.Set("note", secrets[0].Note)
 	d.Set("custom_fields", secrets[0].CustomFields)
-	return nil
+	return diags
 }
