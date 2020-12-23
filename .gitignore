@@ -1,5 +1,6 @@
 terraform*
 main.tf
 .terraform
+.terraform.lock.hcl
 vendor
 crash.log
