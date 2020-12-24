@@ -27,7 +27,7 @@ func TestAccResourceSecret_Basic(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"lastpass_secret.foobar", "password", "hunter2"),
 					resource.TestCheckResourceAttr(
-						"lastpass_secret.foobar", "note", "secret note"),
+						"lastpass_secret.foobar", "note", "FOO\nBAR\n"),
 				),
 			},
 		},
@@ -35,14 +35,20 @@ func TestAccResourceSecret_Basic(t *testing.T) {
 }
 
 func testAccResourceSecretDestroy(s *terraform.State) error {
-	provider := testAccProvider.Meta().(*api.Client)
+	c := testAccProvider.Meta().(*api.Client)
+
 	for _, rs := range s.RootModule().Resources {
 		if rs.Type != "lastpass_secret" {
 			continue
 		}
+		orderID := rs.Primary.ID
 
-		_, err := provider.Read(rs.Primary.ID)
-		if err == nil {
+		err := c.Delete(orderID)
+		if err != nil {
+			return err
+		}
+		secrets, _ := c.Read(rs.Primary.ID)
+		if len(secrets) > 0 {
 			return fmt.Errorf("Secret still exists")
 		}
 	}
@@ -58,8 +64,8 @@ func testAccResourceSecretExists(n string, secret *api.Secret) resource.TestChec
 		if rs.Primary.ID == "" {
 			return fmt.Errorf("No Secret ID is set")
 		}
-		provider := testAccProvider.Meta().(*api.Client)
-		secrets, err := provider.Read(rs.Primary.ID)
+		c := testAccProvider.Meta().(*api.Client)
+		secrets, err := c.Read(rs.Primary.ID)
 		if err != nil {
 			return err
 		}
@@ -76,5 +82,8 @@ resource "lastpass_secret" "foobar" {
     name = "terraform-provider-lastpass resource basic test"
     username = "gopher"
     password = "hunter2"
-    note = "secret note"
+	note = <<EOF
+FOO
+BAR
+EOF
 }`
