@@ -24,7 +24,7 @@ func (c *Client) Read(id string) ([]Secret, error) {
 		// Make sure the secret is not removed manually.
 		if strings.Contains(errbuf.String(), "Could not find specified account") {
 			// return empty secret list
-			return secrets, err
+			return secrets, nil
 		}
 		var err = errors.New(errbuf.String())
 		return secrets, err
