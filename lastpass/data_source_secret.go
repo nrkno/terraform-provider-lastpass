@@ -7,7 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/nrkno/terraform-provider-lastpass/api"
+	"github.com/rezroo/terraform-provider-lastpass/api"
 )
 
 // DataSourceSecret describes our lastpass secret data source

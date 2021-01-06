@@ -5,7 +5,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/nrkno/terraform-provider-lastpass/api"
+	"github.com/rezroo/terraform-provider-lastpass/api"
 )
 
 // Provider config
@@ -20,10 +20,12 @@ func Provider() *schema.Provider {
 		ResourcesMap: map[string]*schema.Resource{
 			"lastpass_secret": ResourceSecret(),
 			"lastpass_server": ResourceServer(),
+			"lastpass_ssh_key": ResourceSshKey(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"lastpass_secret": DataSourceSecret(),
 			"lastpass_server": DataSourceServer(),
+			"lastpass_ssh_key": DataSourceSshKey(),
 		},
 		Schema: map[string]*schema.Schema{
 			"username": {
@@ -49,6 +51,17 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 	client := api.Client{
 		Username: d.Get("username").(string),
 		Password: d.Get("password").(string),
+	}
+	if (client.Username != "") && (client.Password != "") {
+		err := client.Login()
+		if err != nil {
+			diags = append(diags, diag.Diagnostic{
+				Severity: diag.Error,
+				Summary:  "Unable to create Hashicups client",
+				Detail:   "Unable to auth user for authenticated Hashicups client",
+			})
+			return nil, diags
+		}
 	}
 	return &client, diags
 }

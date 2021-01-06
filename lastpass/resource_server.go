@@ -8,7 +8,7 @@ import (
 
     "github.com/hashicorp/terraform-plugin-sdk/v2/diag"
     "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-    "github-com/rezroo/terraform-provider-lastpass/api"
+    "github.com/rezroo/terraform-provider-lastpass/api"
 )
 
 // ResourceServer describes node-type lastpass_server resource
