@@ -19,9 +19,11 @@ func Provider() *schema.Provider {
 	return &schema.Provider{
 		ResourcesMap: map[string]*schema.Resource{
 			"lastpass_secret": ResourceSecret(),
+			"lastpass_server": ResourceServer(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"lastpass_secret": DataSourceSecret(),
+			"lastpass_server": DataSourceServer(),
 		},
 		Schema: map[string]*schema.Schema{
 			"username": {
