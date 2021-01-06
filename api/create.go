@@ -11,12 +11,23 @@ import (
 
 // Create is used to create a new resource and generate ID.
 func (c *Client) Create(s Secret) (Secret, error) {
+    template := s.getTemplate()
+    cmd := exec.Command("lpass", "add", s.Name, "--non-interactive", "--sync=now")
+    return c.create(s.Name, template, cmd)
+}
+
+// Create a secret of type node-type
+func (c *Client) CreateNodeType(name string, template string, nodetype string) (Secret, error) {
+    cmd := exec.Command("lpass", "add", name, "--non-interactive", "--sync=now", "--note-type=" + nodetype)
+    return c.create(name, template, cmd)
+}
+
+func (c *Client) create(name string, template string, cmd *exec.Cmd) (Secret, error) {
+	var s Secret = Secret{ Name: name }
 	err := c.login()
 	if err != nil {
 		return s, err
 	}
-	template := s.getTemplate()
-	cmd := exec.Command("lpass", "add", s.Name, "--non-interactive", "--sync=now")
 	var inbuf, errbuf bytes.Buffer
 	inbuf.Write([]byte(template))
 	cmd.Stdin = &inbuf
