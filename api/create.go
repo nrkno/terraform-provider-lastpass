@@ -42,7 +42,8 @@ func (c *Client) create(name string, template string, cmd *exec.Cmd) (Secret, er
 	// because of the ridiculous way lpass sync works we will need to retry until we get our ID.
 	// see open issue at https://github.com/lastpass/lastpass-cli/issues/450
 	for i := 0; i < 10; i++ {
-		time.Sleep(time.Second * 2)
+        // Still times out we creating several secrets at a time
+		time.Sleep(time.Second * 4) // double the waiting time to 4s per iteration
 		errbuf.Reset()
 		outbuf.Reset()
 		cmd = exec.Command("lpass", "sync")
