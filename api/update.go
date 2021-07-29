@@ -1,26 +1,28 @@
 package api
 
 import (
-	"bytes"
-	"errors"
-	"os/exec"
+	"context"
+
+	"github.com/ansd/lastpass-go"
 )
 
 // Update is called to update secret with upstream
-func (c *Client) Update(s Secret) error {
-	err := c.login()
+func (c *Client) Update(s *Secret) error {
+	account := &lastpass.Account{
+		ID:       s.ID,
+		Name:     s.Name,
+		Username: s.Username,
+		Password: s.Password,
+		URL:      s.URL,
+		Group:    s.Group,
+		Notes:    s.Note,
+	}
+	err := c.Client.Update(context.Background(), account)
 	if err != nil {
 		return err
 	}
-	template := s.getTemplate()
-	cmd := exec.Command("lpass", "edit", s.ID, "--non-interactive", "--sync=now")
-	var inbuf, errbuf bytes.Buffer
-	inbuf.Write([]byte(template))
-	cmd.Stdin = &inbuf
-	cmd.Stderr = &errbuf
-	err = cmd.Run()
+	err = c.Sync()
 	if err != nil {
-		var err = errors.New(errbuf.String())
 		return err
 	}
 	return nil

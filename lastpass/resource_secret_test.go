@@ -47,8 +47,8 @@ func testAccResourceSecretDestroy(s *terraform.State) error {
 		if err != nil {
 			return err
 		}
-		secrets, _ := c.Read(rs.Primary.ID)
-		if len(secrets) > 0 {
+		_, err = c.Read(rs.Primary.ID)
+		if err == nil {
 			return fmt.Errorf("Secret still exists")
 		}
 	}
@@ -65,14 +65,14 @@ func testAccResourceSecretExists(n string, secret *api.Secret) resource.TestChec
 			return fmt.Errorf("No Secret ID is set")
 		}
 		c := testAccProvider.Meta().(*api.Client)
-		secrets, err := c.Read(rs.Primary.ID)
+		tmp, err := c.Read(rs.Primary.ID)
 		if err != nil {
 			return err
 		}
-		if len(secrets) != 1 && secrets[0].ID != rs.Primary.ID {
+		if tmp.ID != rs.Primary.ID {
 			return fmt.Errorf("Secret not found")
 		}
-		*secret = secrets[0]
+		*secret = *tmp
 		return nil
 	}
 }

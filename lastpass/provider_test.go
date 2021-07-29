@@ -30,4 +30,7 @@ func testAccPreCheck(t *testing.T) {
 	if v := os.Getenv("LASTPASS_PASSWORD"); v == "" {
 		t.Fatal("LASTPASS_PASSWORD must be set for acceptance tests")
 	}
+	if v := os.Getenv("LASTPASS_BASEURL"); v == "" {
+		t.Fatal("LASTPASS_BASEURL must be set for acceptance tests")
+	}
 }
