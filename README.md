@@ -5,19 +5,37 @@
 
 The Lastpass provider is used to read, manage, or destroy secrets inside Lastpass. Goodbye secret .tfvars files 👋
 
+⚠️ **Warning**: This provider uses an unofficial LastPass API. With that comes the unfortunate risk of Lastpass releasing breaking changes without previous notice.
+
 ```hcl
 terraform {
   required_providers {
+    random = {
+      source = "hashicorp/random"
+      version = "3.1.0"
+    }
     lastpass = {
       source = "nrkno/lastpass"
+      version = ">= 0.6.0"
     }
   }
+}
+
+provider lastpass {
+  baseurl = "https://lastpass.eu"
+  trust = true
+  enable_2fa = true
+}
+
+resource "random_password" "pw" {
+  length = 32
+  special = false
 }
 
 resource "lastpass_secret" "mysecret" {
     name = "My site"
     username = "foobar"
-    password = file("${path.module}/secret")
+    password = random_password.pw.result
     url = "https://example.com"
     note = <<EOF
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sed elit nec orci
