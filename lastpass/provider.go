@@ -60,7 +60,7 @@ func Provider() *schema.Provider {
 				Optional:    true,
 				Sensitive:   false,
 				Description: "Trust will cause subsequent logins to not require multifactor authentication",
-				DefaultFunc: schema.EnvDefaultFunc("LASTPASS_TRUST", true),
+				DefaultFunc: schema.EnvDefaultFunc("LASTPASS_TRUST", false),
 			},
 			"configdir": {
 				Type:        schema.TypeString,
