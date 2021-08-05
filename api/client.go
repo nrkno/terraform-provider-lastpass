@@ -6,14 +6,15 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/ansd/lastpass-go"
 )
 
 // Secret describes a Lastpass object.
 type Secret struct {
-	Fullname        string            `json:"fullname"`
 	Group           string            `json:"group"`
 	ID              string            `json:"id"`
 	LastModifiedGmt string            `json:"last_modified_gmt"`
@@ -124,4 +125,12 @@ func (s *Secret) genCustomFields() {
 		}
 	}
 	s.CustomFields = notes
+}
+
+func epochToTime(s string) (string, error) {
+	sec, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		return "", err
+	}
+	return time.Unix(sec, 0).String(), nil
 }
