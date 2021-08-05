@@ -27,10 +27,6 @@ func ResourceSecret() *schema.Resource {
 				Required: true,
 				ForceNew: true,
 			},
-			"fullname": {
-				Type:     schema.TypeString,
-				Computed: true,
-			},
 			"username": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -108,7 +104,8 @@ func ResourceSecretRead(ctx context.Context, d *schema.ResourceData, m interface
 	d.Set("url", secret.URL)
 	d.Set("group", secret.Group)
 	d.Set("note", secret.Note)
-
+	d.Set("last_modified_gmt", secret.LastModifiedGmt)
+	d.Set("last_touch", secret.LastTouch)
 	return diags
 }
 
@@ -159,5 +156,8 @@ func ResourceSecretImporter(d *schema.ResourceData, m interface{}) ([]*schema.Re
 	d.Set("url", secret.URL)
 	d.Set("group", secret.Group)
 	d.Set("note", secret.Note)
+	d.Set("last_modified_gmt", secret.LastModifiedGmt)
+	d.Set("last_touch", secret.LastTouch)
+
 	return []*schema.ResourceData{d}, nil
 }
