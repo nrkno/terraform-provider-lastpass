@@ -42,7 +42,6 @@ output "custom_field" {
 ### Read-Only
 
 - **name** (String)
-- **fullname** (String)
 - **username** (String)
 - **password** (String, Sensitive)
 - **last_modified_gmt** (String)

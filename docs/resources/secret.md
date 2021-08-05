@@ -43,7 +43,6 @@ EOF
 ### Read-Only
 
 - **id** (String) The ID of this resource.
-- **fullname** (String)
 - **last_modified_gmt** (String)
 - **last_touch** (String)
 
