@@ -15,17 +15,17 @@ import (
 
 // Secret describes a Lastpass object.
 type Secret struct {
-	ID              string            `json:"id"`
-	Name            string            `json:"name"`
-	Username        string            `json:"username"`
-	Password        string            `json:"password"`
-	URL             string            `json:"url"`
-	Share           string            `json:"share"`
-	Group           string            `json:"group"`
-	Note            string            `json:"note"`
-	LastModifiedGmt string            `json:"last_modified_gmt"`
-	LastTouch       string            `json:"last_touch"`
-	CustomFields    map[string]string `json:"custom_fields"`
+	ID              string
+	Name            string
+	Username        string
+	Password        string
+	URL             string
+	Share           string
+	Group           string
+	Note            string
+	LastModifiedGmt string
+	LastTouch       string
+	CustomFields    map[string]string
 }
 
 // Client is our Lastpass (lastpass-go) wrapper client.
