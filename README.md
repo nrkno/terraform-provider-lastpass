@@ -36,8 +36,9 @@ resource "lastpass_secret" "mysecret" {
     name = "My site"
     username = "foobar"
     password = random_password.pw.result
+    share = "Shared-TeamX"
     url = "https://example.com"
-    note = <<EOF
+    notes = <<EOF
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sed elit nec orci
 cursus rhoncus. Morbi lacus turpis, volutpat in lobortis vel, mattis nec magna.
 Cras gravida libero vitae nisl iaculis ultrices. Fusce odio ligula, pharetra ac

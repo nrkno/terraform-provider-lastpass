@@ -48,7 +48,6 @@ output "custom_field" {
 - **last_touch** (String)
 - **url** (String)
 - **group** (String)
-- **note** (String, Sensitive)
+- **share** (String)
+- **notes** (String, Sensitive)
 - **custom_fields** (Map of String, Sensitive)
-
-
