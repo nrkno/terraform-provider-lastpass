@@ -63,12 +63,12 @@ func ResourceSecret() *schema.Resource {
 				Optional: true,
 				Computed: true,
 			},
-			"note": {
+			"notes": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Sensitive:   true,
 				Computed:    true,
-				Description: "The secret note content.",
+				Description: "The secret notes content.",
 			},
 		},
 	}
@@ -85,7 +85,7 @@ func ResourceSecretCreate(ctx context.Context, d *schema.ResourceData, m interfa
 		URL:      d.Get("url").(string),
 		Group:    d.Get("group").(string),
 		Share:    d.Get("share").(string),
-		Note:     d.Get("note").(string),
+		Notes:    d.Get("notes").(string),
 	}
 	err := client.Create(&s)
 	if err != nil {
@@ -112,7 +112,7 @@ func ResourceSecretRead(ctx context.Context, d *schema.ResourceData, m interface
 	d.Set("url", secret.URL)
 	d.Set("group", secret.Group)
 	d.Set("share", secret.Share)
-	d.Set("note", secret.Note)
+	d.Set("notes", secret.Notes)
 	d.Set("last_modified_gmt", secret.LastModifiedGmt)
 	d.Set("last_touch", secret.LastTouch)
 	return diags
@@ -128,7 +128,7 @@ func ResourceSecretUpdate(ctx context.Context, d *schema.ResourceData, m interfa
 		URL:      d.Get("url").(string),
 		Group:    d.Get("group").(string),
 		Share:    d.Get("share").(string),
-		Note:     d.Get("note").(string),
+		Notes:    d.Get("notes").(string),
 	}
 	client := m.(*api.Client)
 	err := client.Update(&s)
@@ -148,7 +148,7 @@ func ResourceSecretDelete(ctx context.Context, d *schema.ResourceData, m interfa
 		URL:      d.Get("url").(string),
 		Group:    d.Get("group").(string),
 		Share:    d.Get("share").(string),
-		Note:     d.Get("note").(string),
+		Notes:    d.Get("notes").(string),
 	}
 	client := m.(*api.Client)
 	var diags diag.Diagnostics
@@ -176,7 +176,7 @@ func ResourceSecretImporter(d *schema.ResourceData, m interface{}) ([]*schema.Re
 	d.Set("url", secret.URL)
 	d.Set("group", secret.Group)
 	d.Set("share", secret.Share)
-	d.Set("note", secret.Note)
+	d.Set("notes", secret.Notes)
 	d.Set("last_modified_gmt", secret.LastModifiedGmt)
 	d.Set("last_touch", secret.LastTouch)
 

@@ -16,7 +16,7 @@ func (c *Client) Delete(s *Secret) error {
 		URL:      s.URL,
 		Group:    s.Group,
 		Share:    s.Share,
-		Notes:    s.Note,
+		Notes:    s.Notes,
 	}
 	err := c.Client.Delete(context.Background(), account)
 	if err != nil {

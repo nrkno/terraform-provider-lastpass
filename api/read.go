@@ -24,7 +24,7 @@ func (c *Client) Read(id string) (*Secret, error) {
 				URL:             account.URL,
 				Group:           account.Group,
 				Share:           account.Share,
-				Note:            account.Notes,
+				Notes:           account.Notes,
 				LastModifiedGmt: modifiedGMT,
 				LastTouch:       lastTouch,
 			}

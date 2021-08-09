@@ -15,7 +15,7 @@ func (c *Client) Create(s *Secret) error {
 		URL:      s.URL,
 		Group:    s.Group,
 		Share:    s.Share,
-		Notes:    s.Note,
+		Notes:    s.Notes,
 	}
 	err := c.Client.Add(context.Background(), a)
 	if err != nil {

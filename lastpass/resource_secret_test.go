@@ -27,7 +27,7 @@ func TestAccResourceSecret_Basic(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"lastpass_secret.foobar", "password", "hunter2"),
 					resource.TestCheckResourceAttr(
-						"lastpass_secret.foobar", "note", "FOO\nBAR\n"),
+						"lastpass_secret.foobar", "notes", "FOO\nBAR\n"),
 				),
 			},
 		},
@@ -49,7 +49,7 @@ func testAccResourceSecretDestroy(s *terraform.State) error {
 			URL:      rs.Primary.Attributes["url"],
 			Group:    rs.Primary.Attributes["group"],
 			Share:    rs.Primary.Attributes["share"],
-			Note:     rs.Primary.Attributes["note"],
+			Notes:    rs.Primary.Attributes["notes"],
 		}
 
 		err := c.Delete(&s)
@@ -91,7 +91,7 @@ resource "lastpass_secret" "foobar" {
     name = "terraform-provider-lastpass resource basic test"
     username = "gopher"
     password = "hunter2"
-	note = <<EOF
+	notes = <<EOF
 FOO
 BAR
 EOF

@@ -21,7 +21,7 @@ func TestAccDataSourceSecret_Basic(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"data.lastpass_secret.foobar", "password", "hunter2"),
 					resource.TestCheckResourceAttr(
-						"data.lastpass_secret.foobar", "note", "secret note"),
+						"data.lastpass_secret.foobar", "notes", "secret note"),
 				),
 			},
 		},
@@ -33,7 +33,7 @@ resource "lastpass_secret" "foobar" {
     name = "terraform-provider-lastpass datasource basic test"
     username = "gopher"
     password = "hunter2"
-    note = "secret note"
+    notes = "secret note"
 }
 data "lastpass_secret" "foobar" {
     id = lastpass_secret.foobar.id
