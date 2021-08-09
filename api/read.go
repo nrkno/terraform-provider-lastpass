@@ -23,6 +23,7 @@ func (c *Client) Read(id string) (*Secret, error) {
 				Password:        account.Password,
 				URL:             account.URL,
 				Group:           account.Group,
+				Share:           account.Share,
 				Note:            account.Notes,
 				LastModifiedGmt: modifiedGMT,
 				LastTouch:       lastTouch,

@@ -44,6 +44,10 @@ func DataSourceSecret() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
+			"share": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
 			"url": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -81,6 +85,7 @@ func DataSourceSecretRead(ctx context.Context, d *schema.ResourceData, m interfa
 	d.Set("password", secret.Password)
 	d.Set("url", secret.URL)
 	d.Set("group", secret.Group)
+	d.Set("share", secret.Share)
 	d.Set("note", secret.Note)
 	d.Set("last_modified_gmt", secret.LastModifiedGmt)
 	d.Set("last_touch", secret.LastTouch)

@@ -52,6 +52,12 @@ func ResourceSecret() *schema.Resource {
 				Computed: true,
 				ForceNew: true,
 			},
+			"share": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"url": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -78,6 +84,7 @@ func ResourceSecretCreate(ctx context.Context, d *schema.ResourceData, m interfa
 		Password: d.Get("password").(string),
 		URL:      d.Get("url").(string),
 		Group:    d.Get("group").(string),
+		Share:    d.Get("share").(string),
 		Note:     d.Get("note").(string),
 	}
 	err := client.Create(&s)
@@ -104,6 +111,7 @@ func ResourceSecretRead(ctx context.Context, d *schema.ResourceData, m interface
 	d.Set("password", secret.Password)
 	d.Set("url", secret.URL)
 	d.Set("group", secret.Group)
+	d.Set("share", secret.Share)
 	d.Set("note", secret.Note)
 	d.Set("last_modified_gmt", secret.LastModifiedGmt)
 	d.Set("last_touch", secret.LastTouch)
@@ -119,6 +127,7 @@ func ResourceSecretUpdate(ctx context.Context, d *schema.ResourceData, m interfa
 		Password: d.Get("password").(string),
 		URL:      d.Get("url").(string),
 		Group:    d.Get("group").(string),
+		Share:    d.Get("share").(string),
 		Note:     d.Get("note").(string),
 	}
 	client := m.(*api.Client)
@@ -131,9 +140,19 @@ func ResourceSecretUpdate(ctx context.Context, d *schema.ResourceData, m interfa
 
 // ResourceSecretDelete is called to destroy the resource.
 func ResourceSecretDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	s := api.Secret{
+		ID:       d.Id(),
+		Name:     d.Get("name").(string),
+		Username: d.Get("username").(string),
+		Password: d.Get("password").(string),
+		URL:      d.Get("url").(string),
+		Group:    d.Get("group").(string),
+		Share:    d.Get("share").(string),
+		Note:     d.Get("note").(string),
+	}
 	client := m.(*api.Client)
 	var diags diag.Diagnostics
-	err := client.Delete(d.Id())
+	err := client.Delete(&s)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -156,6 +175,7 @@ func ResourceSecretImporter(d *schema.ResourceData, m interface{}) ([]*schema.Re
 	d.Set("password", secret.Password)
 	d.Set("url", secret.URL)
 	d.Set("group", secret.Group)
+	d.Set("share", secret.Share)
 	d.Set("note", secret.Note)
 	d.Set("last_modified_gmt", secret.LastModifiedGmt)
 	d.Set("last_touch", secret.LastTouch)

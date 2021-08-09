@@ -15,6 +15,7 @@ func (c *Client) Update(s *Secret) error {
 		Password: s.Password,
 		URL:      s.URL,
 		Group:    s.Group,
+		Share:    s.Share,
 		Notes:    s.Note,
 	}
 	err := c.Client.Update(context.Background(), account)

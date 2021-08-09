@@ -41,9 +41,18 @@ func testAccResourceSecretDestroy(s *terraform.State) error {
 		if rs.Type != "lastpass_secret" {
 			continue
 		}
-		orderID := rs.Primary.ID
+		s := api.Secret{
+			ID:       rs.Primary.ID,
+			Name:     rs.Primary.Attributes["name"],
+			Username: rs.Primary.Attributes["username"],
+			Password: rs.Primary.Attributes["password"],
+			URL:      rs.Primary.Attributes["url"],
+			Group:    rs.Primary.Attributes["group"],
+			Share:    rs.Primary.Attributes["share"],
+			Note:     rs.Primary.Attributes["note"],
+		}
 
-		err := c.Delete(orderID)
+		err := c.Delete(&s)
 		if err != nil {
 			return err
 		}
