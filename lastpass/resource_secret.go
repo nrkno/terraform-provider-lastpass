@@ -50,6 +50,7 @@ func ResourceSecret() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
+				ForceNew: true,
 			},
 			"url": {
 				Type:     schema.TypeString,
