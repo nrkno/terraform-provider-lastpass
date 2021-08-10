@@ -49,8 +49,8 @@ github.com/agext/levenshtein v1.2.2 h1:0S/Yg6LYmFJ5stwQeRp6EeOcCbj7xiqQSdNelsXva
 github.com/agext/levenshtein v1.2.2/go.mod h1:JEDfjyjHDjOF/1e4FlBE/PkbqA9OfWu2ki2W0IB5558=
 github.com/andybalholm/crlf v0.0.0-20171020200849-670099aa064f/go.mod h1:k8feO4+kXDxro6ErPXBRTJ/ro2mf0SsFG8s7doP9kJE=
 github.com/anmitsu/go-shlex v0.0.0-20161002113705-648efa622239/go.mod h1:2FmKhYUyUczH0OGQWaF5ceTx0UBShxjsH6f8oGKYe2c=
-github.com/ansd/lastpass-go v0.2.1-0.20210809131014-bc755a1b4d99 h1:irG/qUZ6YRf9RvvY86AILdgOctz3WPRUbzq7gzybFFE=
-github.com/ansd/lastpass-go v0.2.1-0.20210809131014-bc755a1b4d99/go.mod h1:OyCBEc+gyi5Cc+jU8bP6C+gXWXIS3vMCj6h5DwYo1tc=
+github.com/ansd/lastpass-go v0.3.0 h1:AW1VyOUXntMBv8/fndnlamh7hYhnt9yIwIaRBK7m5vw=
+github.com/ansd/lastpass-go v0.3.0/go.mod h1:OyCBEc+gyi5Cc+jU8bP6C+gXWXIS3vMCj6h5DwYo1tc=
 github.com/apparentlymart/go-cidr v1.0.1/go.mod h1:EBcsNrHc3zQeuaeCeCtQruQm+n9/YjEn/vI25Lg7Gwc=
 github.com/apparentlymart/go-dump v0.0.0-20180507223929-23540a00eaa3/go.mod h1:oL81AME2rN47vu18xqj1S1jPIPuN7afo62yKTNn3XMM=
 github.com/apparentlymart/go-dump v0.0.0-20190214190832-042adf3cf4a0 h1:MzVXffFUye+ZcSR6opIgz9Co7WcDx6ZcY+RjfFHoA0I=
