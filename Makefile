@@ -3,7 +3,7 @@ HOSTNAME=registry.terraform.io
 NAMESPACE=rezroo
 NAME=lastpass
 BINARY=terraform-provider-${NAME}
-VERSION=0.6.0
+VERSION=0.5.5
 OS_ARCH=darwin_amd64
 
 default: install
@@ -26,10 +26,12 @@ release:
 	GOOS=windows GOARCH=amd64 go build -o ./bin/${BINARY}_${VERSION}_windows_amd64
 
 # also cp to root plugins folder to make backward compatible with TF 0.12
-install: build
+install: build ~/.terraform.d/plugins/${BINARY}_v${VERSION}
 	mkdir -p ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
-	cp ${BINARY} ~/.terraform.d/plugins/
 	mv ${BINARY} ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
+
+~/.terraform.d/plugins/${BINARY}_v${VERSION}: ${BINARY}
+	cp ${BINARY} ~/.terraform.d/plugins/${BINARY}_v${VERSION}
 
 test: 
 	go test -i $(TEST) || exit 1                                                   

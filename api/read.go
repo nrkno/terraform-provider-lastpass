@@ -39,3 +39,25 @@ func (c *Client) Read(id string) ([]Secret, error) {
 	}
 	return secrets, nil
 }
+
+func (c *Client) read(id string) ([]Secret, error) {
+	var secrets []Secret
+	cmd := exec.Command("lpass", "show", "--sync=auto", "-G", id, "--json", "-x")
+	var outbuf, errbuf bytes.Buffer
+	cmd.Stdout = &outbuf
+	cmd.Stderr = &errbuf
+	err := cmd.Run()
+	if err != nil {
+		var err = errors.New(errbuf.String())
+		return secrets, err
+	}
+	err = json.Unmarshal(outbuf.Bytes(), &secrets)
+	if err != nil {
+		return secrets, err
+	}
+	for i := range secrets {
+		secrets[i].genCustomFields()
+		secrets[i].Name = secrets[i].Fullname // lastpass trims path from name, so we need to copy fullname
+	}
+	return secrets, nil
+}
