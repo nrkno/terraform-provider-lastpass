@@ -31,7 +31,7 @@ EOF
 
 ### Required
 
-- **name** (String) Must be unique. Changing name will force recreation.
+- **name** (String)
 
 ### Optional
 
