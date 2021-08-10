@@ -25,7 +25,6 @@ func ResourceSecret() *schema.Resource {
 			"name": {
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: true,
 			},
 			"username": {
 				Type:     schema.TypeString,
@@ -50,7 +49,6 @@ func ResourceSecret() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
-				ForceNew: true,
 			},
 			"share": {
 				Type:     schema.TypeString,
