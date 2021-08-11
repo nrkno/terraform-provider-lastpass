@@ -99,13 +99,13 @@ func (s *Secret) genCustomFields() {
 		s.Notes = "\n" + s.Notes
 
 		// change '\n<words>:' to something more precise regexp can parse
-		tokenizer := regexp.MustCompile(`\n([[:alnum:]][ [:alnum:]]+:)`)
+		tokenizer := regexp.MustCompile(`\n([[:alnum:]][ -_[:alnum:]]+:)`)
 		s.Notes = tokenizer.ReplaceAllString(s.Notes, "\a$1\a")
 
 		// break up notes using '\n<word>:<multi-line-string without control character bell>'
 		// - which implies that custom-fields values cannot include the bell character
 		// - allows for an inexpensive parser using regexp
-		splitter := regexp.MustCompile(`\a([ [:alnum:]]+):\a([^\a]*)`)
+		splitter := regexp.MustCompile(`\a([ -_[:alnum:]]+):\a([^\a]*)`)
 		splitted := splitter.FindAllStringSubmatchIndex(s.Notes, -1)
 		fmt.Println(splitted)
 		for _, ss := range splitted {
