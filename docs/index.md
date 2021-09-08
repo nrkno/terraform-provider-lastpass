@@ -31,7 +31,7 @@ terraform {
     }
     lastpass = {
       source = "nrkno/lastpass"
-      version = ">= 0.6.0"
+      version = ">= 1.0.0"
     }
   }
 }
