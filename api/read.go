@@ -1,44 +1,36 @@
 package api
 
 import (
-	"bytes"
-	"encoding/json"
 	"errors"
-	"os/exec"
-	"strings"
 )
 
 // Fetch secrets from upstream
-func (c *Client) Read(id string) ([]Secret, error) {
-	var secrets []Secret
-	err := c.login()
-	if err != nil {
-		return secrets, err
-	}
-	cmd := exec.Command("lpass", "show", "--sync=auto", "-G", id, "--json", "-x")
-	var outbuf, errbuf bytes.Buffer
-	cmd.Stdout = &outbuf
-	cmd.Stderr = &errbuf
-	err = cmd.Run()
-	if err != nil {
-		// Make sure the secret is not removed manually.
-		if strings.Contains(errbuf.String(), "Could not find specified account") {
-			// return empty secret list
-			return secrets, nil
+func (c *Client) Read(id string) (*Secret, error) {
+	for _, account := range c.Accounts {
+		if account.ID == id {
+			modifiedGMT, err := epochToTime(account.LastModifiedGMT)
+			if err != nil {
+				return nil, err
+			}
+			lastTouch, err := epochToTime(account.LastTouch)
+			if err != nil {
+				return nil, err
+			}
+			secret := Secret{
+				ID:              account.ID,
+				Name:            account.Name,
+				Username:        account.Username,
+				Password:        account.Password,
+				URL:             account.URL,
+				Group:           account.Group,
+				Share:           account.Share,
+				Notes:           account.Notes,
+				LastModifiedGmt: modifiedGMT,
+				LastTouch:       lastTouch,
+			}
+			secret.genCustomFields()
+			return &secret, nil
 		}
-		var err = errors.New(errbuf.String())
-		return secrets, err
 	}
-	err = json.Unmarshal(outbuf.Bytes(), &secrets)
-	if err != nil {
-		return secrets, err
-	}
-	for i := range secrets {
-		if strings.Contains(secrets[i].Note, "\n") {
-			secrets[i].Note = secrets[i].Note + "\n" // lastpass trims new line, add back to multiline notes.
-		}
-		secrets[i].genCustomFields()
-		secrets[i].Name = secrets[i].Fullname // lastpass trims path from name, so we need to copy fullname
-	}
-	return secrets, nil
+	return nil, errors.New("Could not find specified secret")
 }

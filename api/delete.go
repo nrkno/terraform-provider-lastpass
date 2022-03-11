@@ -1,28 +1,29 @@
 package api
 
 import (
-	"bytes"
-	"errors"
-	"os/exec"
-	"strings"
+	"context"
+
+	"github.com/ansd/lastpass-go"
 )
 
 // Delete secret in upstream db
-func (c *Client) Delete(id string) error {
-	err := c.login()
+func (c *Client) Delete(s *Secret) error {
+	account := &lastpass.Account{
+		ID:       s.ID,
+		Name:     s.Name,
+		Username: s.Username,
+		Password: s.Password,
+		URL:      s.URL,
+		Group:    s.Group,
+		Share:    s.Share,
+		Notes:    s.Notes,
+	}
+	err := c.Client.Delete(context.Background(), account)
 	if err != nil {
 		return err
 	}
-	var errbuf bytes.Buffer
-	cmd := exec.Command("lpass", "rm", id, "--sync=now")
-	cmd.Stderr = &errbuf
-	err = cmd.Run()
+	err = c.Sync()
 	if err != nil {
-		// Make sure the secret is not removed manually.
-		if strings.Contains(errbuf.String(), "Could not find specified account") {
-			return nil
-		}
-		var err = errors.New(errbuf.String())
 		return err
 	}
 	return nil

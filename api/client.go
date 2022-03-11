@@ -1,91 +1,136 @@
 package api
 
 import (
-	"bytes"
-	"errors"
+	"context"
 	"fmt"
 	"os"
-	"os/exec"
+	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
+	"time"
+
+	"github.com/ansd/lastpass-go"
 )
 
 // Secret describes a Lastpass object.
 type Secret struct {
-	Fullname        string            `json:"fullname"`
-	Group           string            `json:"group"`
-	ID              string            `json:"id"`
-	LastModifiedGmt string            `json:"last_modified_gmt"`
-	LastTouch       string            `json:"last_touch"`
-	Name            string            `json:"name"`
-	Note            string            `json:"note"`
-	Password        string            `json:"password"`
-	Share           string            `json:"share"`
-	URL             string            `json:"url"`
-	Username        string            `json:"username"`
-	CustomFields    map[string]string `json:"custom_fields"`
+	ID              string
+	Name            string
+	Username        string
+	Password        string
+	URL             string
+	Share           string
+	Group           string
+	Notes           string
+	LastModifiedGmt string
+	LastTouch       string
+	CustomFields    map[string]string
 }
 
-// Client is our Lastpass (lpass) wrapper client.
+// Client is our Lastpass (lastpass-go) wrapper client.
 type Client struct {
-	Username string
-	Password string
+	Client    *lastpass.Client
+	Accounts  []*lastpass.Account
+	Username  string
+	Password  string
+	Trust     bool
+	TwoFA     bool
+	OnetimePW string
+	ConfigDIR string
+	BaseURL   string
+}
+
+func (c *Client) Login() error {
+	var client *lastpass.Client
+	// authenticate with LastPass servers
+	basedir, err := os.UserConfigDir()
+	if err != nil {
+		return err
+	}
+	fullpath := filepath.Join(basedir, c.ConfigDIR)
+	if !c.TwoFA {
+		client, err = lastpass.NewClient(
+			context.Background(),
+			c.Username,
+			c.Password,
+			lastpass.WithBaseURL(c.BaseURL),
+			lastpass.WithConfigDir(fullpath))
+	}
+	if c.Trust {
+		client, err = lastpass.NewClient(
+			context.Background(),
+			c.Username,
+			c.Password,
+			lastpass.WithOneTimePassword(c.OnetimePW),
+			lastpass.WithBaseURL(c.BaseURL),
+			lastpass.WithTrust(),
+			lastpass.WithConfigDir(fullpath))
+	} else {
+		client, err = lastpass.NewClient(
+			context.Background(),
+			c.Username,
+			c.Password,
+			lastpass.WithOneTimePassword(c.OnetimePW),
+			lastpass.WithBaseURL(c.BaseURL),
+			lastpass.WithConfigDir(fullpath))
+	}
+	if err != nil {
+		return err
+	}
+	c.Client = client
+	return nil
+}
+
+func (c *Client) Sync() error {
+	// read all Accounts()
+	accounts, err := c.Client.Accounts(context.Background())
+	if err != nil {
+		return err
+	}
+	c.Accounts = accounts
+	return nil
 }
 
 func (s *Secret) genCustomFields() {
 	notes := make(map[string]string)
-	if strings.HasPrefix(s.Note, "NoteType:") {
-		splitted := strings.Split(s.Note, "\n")
-		for _, split := range splitted {
-			re := regexp.MustCompile(`:`)
-			s := re.Split(split, 2)
-			if s[0] == "Notes" {
-				break
-			}
-			if len(s) == 2 {
-				notes[s[0]] = s[1]
-			}
+	if strings.HasPrefix(s.Notes, "NoteType:") {
+		// fix notes so the regexp works
+		s.Notes = "\n" + s.Notes
+
+		// change '\n<words>:' to something more precise regexp can parse
+		tokenizer := regexp.MustCompile(`\n([[:alnum:]][ -_[:alnum:]]+:)`)
+		s.Notes = tokenizer.ReplaceAllString(s.Notes, "\a$1\a")
+
+		// break up notes using '\n<word>:<multi-line-string without control character bell>'
+		// - which implies that custom-fields values cannot include the bell character
+		// - allows for an inexpensive parser using regexp
+		splitter := regexp.MustCompile(`\a([ -_[:alnum:]]+):\a([^\a]*)`)
+		splitted := splitter.FindAllStringSubmatchIndex(s.Notes, -1)
+		fmt.Println(splitted)
+		for _, ss := range splitted {
+			fmt.Println("*>> ", string(s.Notes[ss[0]:ss[1]]))
+			fmt.Println("[0] ", string(s.Notes[ss[2]:ss[3]]))
+			fmt.Println("[1] ", string(s.Notes[ss[4]:ss[5]]))
 		}
-		// Fix for Notes with multiline. Always last in end of the string.
-		n := strings.Split(s.Note, "\nNotes:")
-		if len(n) == 2 {
-			notes["Notes"] = n[1]
+
+		for _, ss := range splitted {
+			key := s.Notes[ss[2]:ss[3]]
+			value := s.Notes[ss[4]:ss[5]]
+			if key == "Notes" && strings.Contains(value, "\n") {
+				notes[key] = strings.TrimSuffix(value, "\n")
+			} else {
+				notes[key] = value
+			}
 		}
 	}
 	s.CustomFields = notes
 }
 
-func (s *Secret) getTemplate() string {
-	template := fmt.Sprintf(`Name: %s
-URL: %s
-Username: %s 
-Password: %s
-Notes:    # Add notes below this line.
-%s
-`, s.Name, s.URL, s.Username, s.Password, s.Note)
-	return template
-}
-
-func (c *Client) login() error {
-	cmd := exec.Command("lpass", "status", "-q")
-	err := cmd.Run()
+func epochToTime(s string) (string, error) {
+	sec, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
-		if c.Username == "" {
-			err := errors.New("Not logged in, please run 'lpass login' manually and try again")
-			return err
-		}
-		cmd := exec.Command("lpass", "login", c.Username)
-		var inbuf, errbuf bytes.Buffer
-		cmd.Env = os.Environ()
-		cmd.Env = append(cmd.Env, "LPASS_DISABLE_PINENTRY=1")
-		inbuf.Write([]byte(c.Password))
-		cmd.Stdin = &inbuf
-		cmd.Stderr = &errbuf
-		err := cmd.Run()
-		if err != nil {
-			var err = errors.New(errbuf.String())
-			return err
-		}
+		return "", err
 	}
-	return nil
+	return time.Unix(sec, 0).String(), nil
 }

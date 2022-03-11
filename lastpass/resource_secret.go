@@ -25,11 +25,6 @@ func ResourceSecret() *schema.Resource {
 			"name": {
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: true,
-			},
-			"fullname": {
-				Type:     schema.TypeString,
-				Computed: true,
 			},
 			"username": {
 				Type:     schema.TypeString,
@@ -52,19 +47,26 @@ func ResourceSecret() *schema.Resource {
 			},
 			"group": {
 				Type:     schema.TypeString,
+				Optional: true,
 				Computed: true,
+			},
+			"share": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"url": {
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
 			},
-			"note": {
+			"notes": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Sensitive:   true,
 				Computed:    true,
-				Description: "The secret note content.",
+				Description: "The secret notes content.",
 			},
 		},
 	}
@@ -76,12 +78,14 @@ func ResourceSecretCreate(ctx context.Context, d *schema.ResourceData, m interfa
 	var diags diag.Diagnostics
 	s := api.Secret{
 		Name:     d.Get("name").(string),
-		URL:      d.Get("url").(string),
 		Username: d.Get("username").(string),
 		Password: d.Get("password").(string),
-		Note:     d.Get("note").(string),
+		URL:      d.Get("url").(string),
+		Group:    d.Get("group").(string),
+		Share:    d.Get("share").(string),
+		Notes:    d.Get("notes").(string),
 	}
-	s, err := client.Create(s)
+	err := client.Create(&s)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -95,42 +99,37 @@ func ResourceSecretCreate(ctx context.Context, d *schema.ResourceData, m interfa
 func ResourceSecretRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	client := m.(*api.Client)
 	var diags diag.Diagnostics
-	secrets, err := client.Read(d.Id())
+	secret, err := client.Read(d.Id())
 	if err != nil {
-		return diag.FromErr(err)
-	}
-	if len(secrets) == 0 {
 		d.SetId("")
 		return nil
-	} else if len(secrets) > 1 {
-		var err = errors.New("got duplicate IDs")
-		return diag.FromErr(err)
 	}
-	d.Set("name", secrets[0].Name)
-	d.Set("fullname", secrets[0].Fullname)
-	d.Set("username", secrets[0].Username)
-	d.Set("password", secrets[0].Password)
-	d.Set("last_modified_gmt", secrets[0].LastModifiedGmt)
-	d.Set("last_touch", secrets[0].LastTouch)
-	d.Set("group", secrets[0].Group)
-	d.Set("url", secrets[0].URL)
-	d.Set("note", secrets[0].Note)
-
+	d.Set("name", secret.Name)
+	d.Set("username", secret.Username)
+	d.Set("password", secret.Password)
+	d.Set("url", secret.URL)
+	d.Set("group", secret.Group)
+	d.Set("share", secret.Share)
+	d.Set("notes", secret.Notes)
+	d.Set("last_modified_gmt", secret.LastModifiedGmt)
+	d.Set("last_touch", secret.LastTouch)
 	return diags
 }
 
 // ResourceSecretUpdate is used to update our existing resource
 func ResourceSecretUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	s := api.Secret{
+		ID:       d.Id(),
 		Name:     d.Get("name").(string),
-		URL:      d.Get("url").(string),
 		Username: d.Get("username").(string),
 		Password: d.Get("password").(string),
-		Note:     d.Get("note").(string),
-		ID:       d.Id(),
+		URL:      d.Get("url").(string),
+		Group:    d.Get("group").(string),
+		Share:    d.Get("share").(string),
+		Notes:    d.Get("notes").(string),
 	}
 	client := m.(*api.Client)
-	err := client.Update(s)
+	err := client.Update(&s)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -139,9 +138,19 @@ func ResourceSecretUpdate(ctx context.Context, d *schema.ResourceData, m interfa
 
 // ResourceSecretDelete is called to destroy the resource.
 func ResourceSecretDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	s := api.Secret{
+		ID:       d.Id(),
+		Name:     d.Get("name").(string),
+		Username: d.Get("username").(string),
+		Password: d.Get("password").(string),
+		URL:      d.Get("url").(string),
+		Group:    d.Get("group").(string),
+		Share:    d.Get("share").(string),
+		Notes:    d.Get("notes").(string),
+	}
 	client := m.(*api.Client)
 	var diags diag.Diagnostics
-	err := client.Delete(d.Id())
+	err := client.Delete(&s)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -155,25 +164,19 @@ func ResourceSecretImporter(d *schema.ResourceData, m interface{}) ([]*schema.Re
 		return nil, err
 	}
 	client := m.(*api.Client)
-	secrets, err := client.Read(d.Id())
+	secret, err := client.Read(d.Id())
 	if err != nil {
 		return nil, err
 	}
-	if len(secrets) == 0 {
-		var err = errors.New("ID not found")
-		return nil, err
-	} else if len(secrets) > 1 {
-		var err = errors.New("got duplicate IDs")
-		return nil, err
-	}
-	d.Set("name", secrets[0].Name)
-	d.Set("fullname", secrets[0].Fullname)
-	d.Set("username", secrets[0].Username)
-	d.Set("password", secrets[0].Password)
-	d.Set("last_modified_gmt", secrets[0].LastModifiedGmt)
-	d.Set("last_touch", secrets[0].LastTouch)
-	d.Set("group", secrets[0].Group)
-	d.Set("url", secrets[0].URL)
-	d.Set("note", secrets[0].Note)
+	d.Set("name", secret.Name)
+	d.Set("username", secret.Username)
+	d.Set("password", secret.Password)
+	d.Set("url", secret.URL)
+	d.Set("group", secret.Group)
+	d.Set("share", secret.Share)
+	d.Set("notes", secret.Notes)
+	d.Set("last_modified_gmt", secret.LastModifiedGmt)
+	d.Set("last_touch", secret.LastTouch)
+
 	return []*schema.ResourceData{d}, nil
 }

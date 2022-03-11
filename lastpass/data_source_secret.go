@@ -23,10 +23,6 @@ func DataSourceSecret() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"fullname": {
-				Type:     schema.TypeString,
-				Computed: true,
-			},
 			"username": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -48,11 +44,15 @@ func DataSourceSecret() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
+			"share": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
 			"url": {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"note": {
+			"notes": {
 				Type:      schema.TypeString,
 				Computed:  true,
 				Sensitive: true,
@@ -75,27 +75,20 @@ func DataSourceSecretRead(ctx context.Context, d *schema.ResourceData, m interfa
 		err := errors.New("Not a valid Lastpass ID")
 		return diag.FromErr(err)
 	}
-	secrets, err := client.Read(id)
+	secret, err := client.Read(id)
 	if err != nil {
 		return diag.FromErr(err)
 	}
-	if len(secrets) == 0 {
-		d.SetId("")
-		return diags
-	} else if len(secrets) > 1 {
-		var err = errors.New("got duplicate IDs")
-		return diag.FromErr(err)
-	}
-	d.SetId(secrets[0].ID)
-	d.Set("name", secrets[0].Name)
-	d.Set("fullname", secrets[0].Fullname)
-	d.Set("username", secrets[0].Username)
-	d.Set("password", secrets[0].Password)
-	d.Set("last_modified_gmt", secrets[0].LastModifiedGmt)
-	d.Set("last_touch", secrets[0].LastTouch)
-	d.Set("group", secrets[0].Group)
-	d.Set("url", secrets[0].URL)
-	d.Set("note", secrets[0].Note)
-	d.Set("custom_fields", secrets[0].CustomFields)
+	d.SetId(secret.ID)
+	d.Set("name", secret.Name)
+	d.Set("username", secret.Username)
+	d.Set("password", secret.Password)
+	d.Set("url", secret.URL)
+	d.Set("group", secret.Group)
+	d.Set("share", secret.Share)
+	d.Set("notes", secret.Notes)
+	d.Set("last_modified_gmt", secret.LastModifiedGmt)
+	d.Set("last_touch", secret.LastTouch)
+	d.Set("custom_fields", secret.CustomFields)
 	return diags
 }
