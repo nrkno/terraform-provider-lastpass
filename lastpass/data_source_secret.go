@@ -3,7 +3,6 @@ package lastpass
 import (
 	"context"
 	"errors"
-	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -92,10 +91,11 @@ func DataSourceSecretRead(ctx context.Context, d *schema.ResourceData, m interfa
 }
 
 func dataSourceSecretRead(m interface{}, id string) ([]api.Secret, error) {
-    if _, err := strconv.Atoi(id); err != nil {
-        err := errors.New("Not a valid Lastpass ID")
-        return []api.Secret{}, err
-    }
+    // We should be able to retrieve a secret by its fullname, not just number
+    // if _, err := strconv.Atoi(id); err != nil {
+    //    err := errors.New("Not a valid Lastpass ID")
+    //    return []api.Secret{}, err
+    // }
     client := m.(*api.Client)
     secrets, err := client.Read(id)
     if err != nil {
