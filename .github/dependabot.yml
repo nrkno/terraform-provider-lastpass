@@ -7,9 +7,9 @@ updates:
     time: "02:00"
   open-pull-requests-limit: 10
   reviewers:
-  - martensson
+  - rezroo
   assignees:
-  - martensson
+  - rezroo
   ignore:
   - dependency-name: github.com/hashicorp/terraform-plugin-sdk/v2
     versions:
